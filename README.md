@@ -22,10 +22,10 @@
      - `bool AddProcdureInfo(llvm::Function*)`: To specify the Function in which the instruction is present. Returns 1 if success.
      - `bool AddBasicBlockInfo(llvm::BasicBlock*)`: To specify the Basic Block of current function we are specifying points-to information for. Returns 1 if success.
 
-- #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision
-
 - #### Functions to query the information from the .pt dump.
      - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`: Finds all the Must Points-to pairs from the .pt dump for the given instruction and returns its vector.
      - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMayPointsPairsAt(llvm::Instruction*)`: Finds all the Must Points-to pairs from the .pt dump for the given instruction and returns its vector.
      - `void PrintPointsToDump(...)` : Prints the points-to information in a file.
      - `void printToDot(...)` : Prints the points-to information in form of a dot file to visualize it as points-to graph.
+    
+- #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision.
