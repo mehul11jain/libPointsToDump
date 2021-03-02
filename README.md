@@ -7,6 +7,7 @@
 - Standard format makes use of [JSON]() for representing the Points-to information.
 
 #### Public members
+
 ```
  enum PointeeType{
     MustPointee,
@@ -19,3 +20,4 @@
 - `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MayPointee)` : To add may Point-to information to the pt dump.
 - `PointsToInfoAt(llvm::Instruction*)`: To specify the instruction for which points-to relation is being defined.
 - `AddProcdureInfo(llvm::Function*)`: To specify the Function in which the instruction is present.
+- `AddBasicBlockInfo(llvm::BasicBlock*)`: To specify the Basic Block of current function we are specifying points-to information for.
