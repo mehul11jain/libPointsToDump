@@ -5,6 +5,7 @@
 - Can export the information using the API provided in the library back in LLVM and use the information for any purpose.
 - This library also provides a test-suite using which one can analyze their soundness and precision score of their implementation.
 - Standard format makes use of [JSON](https://www.json.org/json-en.html) for representing the Points-to information.
+- Sample .pt dump can be accessed [here](./sample.pt.json)
 
 #### Public members
 
@@ -17,8 +18,8 @@
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
      - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)` : 
-        - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` argument.
-        - To add may Point-to information to the pt dump we must provide `PointeeType::MayPointee` as third argumert.
+        - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` as third argument.
+        - To add may Point-to information to the pt dump we must provide `PointeeType::MayPointee` as third argument.
         - Returns 1 if success.     
      - `bool PointsToInfoAt(llvm::Instruction*)`: 
        - To specify the instruction for which points-to relation is being defined. 
