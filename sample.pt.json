@@ -1,0 +1,57 @@
+{
+    "NumberOfPointerVariable": 4,
+    "PointsToInfo": [
+        {
+            "Procedure": {
+                "FunctionName" : "main",
+                "CurrentBB": {
+                    "BBid" : "BB1",
+                    "Instruction": "store i32* @x, i32** @p",
+                    "PointsToSet": [
+                        {
+                            "type": "int**",
+                            "scope": "global",
+                            "name": "p",
+                            "PointeeSet": [
+                                {
+                                    "Pointee": "x",
+                                    "type": "int*",
+                                    "scope": "global"
+                                },
+                                {
+                                    "Pointee": "y",
+                                    "scope": "global",
+                                    "type": "int*"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "int**",
+                            "scope": "Global",
+                            "name": "q",
+                            "PointeeSet": [
+                                {
+                                    "Pointee": "x",
+                                    "scope": "global",
+                                    "type": "int*"
+                                }
+                            ]
+                        },
+                        {
+                            "type": "int*",
+                            "scope": "global",
+                            "name": "x",
+                            "PointeeSet": [
+                                {
+                                    "Pointee": "a",
+                                    "scope": "global",
+                                    "type": "int"
+                                }
+                            ]
+                        }
+                    ]
+                },
+            }                        
+        }
+    ]
+}
