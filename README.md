@@ -5,7 +5,7 @@
 - Can export the information using the API provided in the library back in LLVM and use the information for any purpose.
 - This library also provides a test-suite using which one can analyze their soundness and precision score of their implementation.
 - Standard format makes use of [JSON](https://www.json.org/json-en.html) for representing the Points-to information.
-- Sample .pt dump can be accessed [here](./sample.pt.json)
+- Sample .pt dump can be accessed [here](./sample.pt.json).
 
 #### Public members
 
@@ -33,9 +33,11 @@
 
 - #### Functions to query the information from the .pt dump.
      - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`: 
-       - Finds all the Must Points-to pairs from the .pt dump for the given instruction and returns its vector.
+       - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
+       - Returns the vector of pointer-pointee pair.
      - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMayPointsPairsAt(llvm::Instruction*)`: 
-       - Finds all the Must Points-to pairs from the .pt dump for the given instruction and returns its vector.
+       - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
+       - Returns the vector of pointer-pointee pair.
      - `void PrintPointsToDump(...)` : 
        - Prints the points-to information in a file.
      - `void printToDot(...)` : 
