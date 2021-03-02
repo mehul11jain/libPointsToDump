@@ -15,9 +15,11 @@
  }  
 ```
 ### API Functionalities
-#### Function to Create the standard .pt dump.
+#### Functions to Create the standard .pt dump.
 - `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MustPointee)` : To add must Point-to information to the pt dump.
 - `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MayPointee)` : To add may Point-to information to the pt dump.
 - `PointsToInfoAt(llvm::Instruction*)`: To specify the instruction for which points-to relation is being defined.
 - `AddProcdureInfo(llvm::Function*)`: To specify the Function in which the instruction is present.
 - `AddBasicBlockInfo(llvm::BasicBlock*)`: To specify the Basic Block of current function we are specifying points-to information for.
+
+#### Functions to query the information from the .pt dump.
