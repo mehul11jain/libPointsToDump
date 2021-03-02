@@ -16,12 +16,10 @@
 ```
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
-     - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MustPointee)` : 
-        - To add must Point-to information to the pt dump.
-        - Returns 1 if success.
-     - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MayPointee)` : 
-       - To add may Point-to information to the pt dump. 
-       - Returns 1 if success.
+     - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)` : 
+        - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` argument.
+        - To add may Point-to information to the pt dump we must provide `PointeeType::MayPointee` as third argumert.
+        - Returns 1 if success.     
      - `bool PointsToInfoAt(llvm::Instruction*)`: 
        - To specify the instruction for which points-to relation is being defined. 
        - Returns 1 if success.
