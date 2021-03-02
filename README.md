@@ -17,30 +17,30 @@
 ```
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
-     - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)` : 
+     - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)`
         - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` as third argument.
         - To add may Point-to information to the pt dump we must provide `PointeeType::MayPointee` as third argument.
         - Returns 1 if success.     
-     - `bool PointsToInfoAt(llvm::Instruction*)`: 
+     - `bool PointsToInfoAt(llvm::Instruction*)`
        - To specify the instruction for which points-to relation is being defined. 
        - Returns 1 if success.
-     - `bool AddProcdureInfo(llvm::Function*)`: 
+     - `bool AddProcdureInfo(llvm::Function*)`
        - To specify the Function in which the instruction is present. 
        - Returns 1 if success.
-     - `bool AddBasicBlockInfo(llvm::BasicBlock*)`: 
+     - `bool AddBasicBlockInfo(llvm::BasicBlock*)`
        - To specify the Basic Block of current function we are specifying points-to information for. 
        - Returns 1 if success.
 
 - #### Functions to query the information from the .pt dump.
-     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`: 
+     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`
        - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
        - Returns the vector of pointer-pointee pair.
-     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMayPointsPairsAt(llvm::Instruction*)`: 
+     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMayPointsPairsAt(llvm::Instruction*)`
        - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
        - Returns the vector of pointer-pointee pair.
-     - `void PrintPointsToDump(...)` : 
+     - `void PrintPointsToDump(...)`
        - Prints the points-to information in a file.
-     - `void printToDot(...)` : 
+     - `void printToDot(...)`
        - Prints the points-to information in form of a dot file to visualize it as points-to graph.
     
 - #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision.
