@@ -4,7 +4,7 @@
 - Provides API to any Analysis writer to dump the information in the standard format created.
 - Can export the information using the API provided in the library back in LLVM and use the information for any purpose.
 - This library also provides a test-suite using which one can analyze their soundness and precision score of their implementation.
-- Standard format makes use of [JSON]() for representing the Points-to information.
+- Standard format makes use of [JSON](https://www.json.org/json-en.html) for representing the Points-to information.
 
 #### Public members
 
@@ -15,11 +15,13 @@
  }  
 ```
 ### API Functionalities
-#### Functions to Create the standard .pt dump.
-- `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MustPointee)` : To add must Point-to information to the pt dump.
-- `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MayPointee)` : To add may Point-to information to the pt dump.
-- `PointsToInfoAt(llvm::Instruction*)`: To specify the instruction for which points-to relation is being defined.
-- `AddProcdureInfo(llvm::Function*)`: To specify the Function in which the instruction is present.
-- `AddBasicBlockInfo(llvm::BasicBlock*)`: To specify the Basic Block of current function we are specifying points-to information for.
+* #### Functions to Create the standard .pt dump.
+     - `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MustPointee)` : To add must Point-to information to the pt dump.
+     - `addPointsTo(llvm::Value*, llvm::Value*, PointeeType::MayPointee)` : To add may Point-to information to the pt dump.
+     - `PointsToInfoAt(llvm::Instruction*)`: To specify the instruction for which points-to relation is being defined.
+     - `AddProcdureInfo(llvm::Function*)`: To specify the Function in which the instruction is present.
+     - `AddBasicBlockInfo(llvm::BasicBlock*)`: To specify the Basic Block of current function we are specifying points-to information for.
 
-#### Functions to query the information from the .pt dump.
+- #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision
+
+- #### Functions to query the information from the .pt dump.
