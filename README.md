@@ -30,6 +30,9 @@
      - `bool AddBasicBlockInfo(llvm::BasicBlock*)`
        - To specify the Basic Block of current function we are specifying points-to information for. 
        - Returns 1 if success.
+     - `bool isValidPTFormat`
+       - To Check whether the .pt file created is according to the correct syntax.
+       - Returns 1 if the .pt file is according to correct syntax.
 
 - #### Functions to query the information from the .pt dump.
      - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`
