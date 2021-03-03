@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 {
 	"FlowInsensitivePointsToInfo": {},
 	"FlowSensitivePointsToInfo": {
@@ -62,3 +63,69 @@
 	},
 	"ContextSensitivePointsToInfo": {}
 }
+=======
+{
+	"FlowInsensitivePointsToInfo": {},
+	"FlowSensitivePointsToInfo": {
+		"Procedure": [
+			{
+				"Functionid": "main",
+				"BasicBlocks": [
+					{
+						"BBid": "BB1",
+						"Instructions": [
+							{
+								"Instructionid": "store i32* @a, i32** @x",
+								"PointsToSet": [
+									{
+										"type": "int**",
+										"scope": "global",
+										"name": "p",
+										"PointeeSet": [
+											{
+												"Pointee": "x",
+												"type": "int*",
+												"scope": "global"
+											},
+											{
+												"Pointee": "y",
+												"scope": "global",
+												"type": "int*"
+											}
+										]
+									},
+									{
+										"type": "int**",
+										"scope": "global",
+										"name": "q",
+										"PointeeSet": [
+											{
+												"Pointee": "x",
+												"scope": "global",
+												"type": "int*"
+											}
+										]
+									},
+									{
+										"type": "int*",
+										"scope": "global",
+										"name": "x",
+										"PointeeSet": [
+											{
+												"Pointee": "a",
+												"scope": "global",
+												"type": "int"
+											}
+										]
+									}
+								]
+							}
+						]
+					}
+				]
+			}
+		]
+	},
+	"ContextSensitivePointsToInfo": {}
+}
+>>>>>>> 4fa16e675e5ce84deb292c1ed172ede587386346

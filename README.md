@@ -10,12 +10,22 @@
 
 #### Public members
 
-```
- enum PointeeType{
-    MustPointee,
-    MayPointee,
- }  
-```
+- To specify the type of pointer-pointee relation we have PointeeType defined:
+   ```
+      enum PointeeType{
+        MustPointee,
+        MayPointee
+      } 
+    ```
+- Analysis can be classified into following types in our standard format:
+  ```
+    enum AnalysisType{
+       FlowInSensitive,
+       FlowSensitive,
+       ContextSensitive
+    }
+  ```
+  
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
      - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)`
@@ -46,5 +56,11 @@
        - Prints the points-to information in a file.
      - `void printToDot(...)`
        - Prints the points-to information in form of a dot file to visualize it as points-to graph.
+     - `bool isMustPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
+       - Return 1 if the specified pointer-pointee pair has a Must relationship at the given instruction.
+     - `bool isMayPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
+       - Return 1 if the specified pointer-pointee pair has a May relationship at the given instruction. 
+     - `std::vector<llvm::Value*> getPointeeOf(llvm::Instruction, llvm::Value*)`
+       - Return a vector of all the pointees of a given pointer at the specified instruction.
     
 - #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision.
