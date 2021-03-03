@@ -10,19 +10,22 @@
 
 #### Public members
 
-```
- enum PointeeType{
-    MustPointee,
-    MayPointee
- } 
-```
-```
- enum AnalysisType{
-    FlowInSensitive,
-    FlowSensitive,
-    ContextSensitive
- }
-```
+- To specify the type of pointer-pointee relation we have PointeeType defined:
+   ```
+      enum PointeeType{
+        MustPointee,
+        MayPointee
+      } 
+    ```
+- Analysis can be classified into following types in our standard format:
+  ```
+    enum AnalysisType{
+       FlowInSensitive,
+       FlowSensitive,
+       ContextSensitive
+    }
+  ```
+  
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
      - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)`
