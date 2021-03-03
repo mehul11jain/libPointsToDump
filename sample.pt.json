@@ -23,7 +23,7 @@
 											},
 											{
 												"Pointee": "y",
-												"scope": "global", 
+												"scope": "global",
 												"type": "int*"
 											}
 										]
