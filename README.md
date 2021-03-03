@@ -60,7 +60,7 @@
        - Return 1 if the specified pointer-pointee pair has a Must relationship at the given instruction.
      - `bool isMayPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
        - Return 1 if the specified pointer-pointee pair has a May relationship at the given instruction. 
-     - `std::vector<llvm::Value*> getpointeeOf(llvm::Instruction, llvm::Value*)`
+     - `std::vector<llvm::Value*> getPointeeOf(llvm::Instruction, llvm::Value*)`
        - Return a vector of all the pointees of a given pointer at the specified instruction.
     
 - #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision.
