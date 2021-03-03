@@ -1,7 +1,7 @@
 set(LLVM_LINK_COMPONENTS core support irreader passes)
 include_directories(./include)
 add_library(PointsToDump SHARED  
-    src/test.cpp       
+    src/PTWriter.cpp       
 )
 set_target_properties(PointsToDump PROPERTIES
     COMPILE_FLAGS "-std=c++14 -fno-rtti -g"
