@@ -6,6 +6,7 @@
 - This library also provides a test-suite using which one can analyze their soundness and precision score of their implementation.
 - Standard format makes use of [JSON](https://www.json.org/json-en.html) for representing the Points-to information.
 - Sample .pt dump can be accessed [here](./sample.pt.json).
+- We use [this](https://github.com/nlohmann/json) library to serialize/deserialize the input.
 
 #### Public members
 
