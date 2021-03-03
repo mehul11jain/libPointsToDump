@@ -13,8 +13,15 @@
 ```
  enum PointeeType{
     MustPointee,
-    MayPointee,
- }  
+    MayPointee
+ } 
+```
+```
+ enum AnalysisType{
+    FlowInSensitive,
+    FlowSensitive,
+    ContextSensitive
+ }
 ```
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
