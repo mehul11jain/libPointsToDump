@@ -20,7 +20,7 @@ env:
 compiler:
   - gcc
   
-scipt :
+script :
   - mkdir build
   - cd build
   - cmake ..
