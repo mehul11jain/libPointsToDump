@@ -32,7 +32,8 @@ namespace PTDump
         json writer;
         AnalysisType Atype;
         std::stack<llvm::BasicBlock*> latestBB;
-        std::stack<llvm::Function*> latestFunction;        
+        std::stack<llvm::Function*> latestFunction;  
+        std::stack<llvm::Instruction*> latestInst;        
 
     public:
         PTWriter()
