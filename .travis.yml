@@ -1,0 +1,6 @@
+language: cpp
+dist: xenial
+
+script:
+  - cmake .
+  - cmake --build .
