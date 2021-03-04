@@ -5,7 +5,7 @@ bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBl
 {
 
     if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
-        // std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
+        std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
         return 0;
     }
     if(Atype == PTDump::AnalysisType::FlowInsensitive)
@@ -225,7 +225,7 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
     }
     else if(Atype == PTDump::AnalysisType::ContextSensitive)
     {
-        
+
     }
     return 1;
 
