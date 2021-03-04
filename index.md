@@ -1,37 +1,67 @@
-## Welcome to GitHub Pages
+# libPointsToDump
+[![Build Status](https://travis-ci.com/mehul11jain/libPointsToDump.svg?token=uaLKCyzaK4p9XPrt7zpP&branch=main)](https://travis-ci.com/mehul11jain/libPointsToDump)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
+- Created a standard format to dump Points-to-Analysis in the specified format.
+- Provides API to any Analysis writer to dump the information in the standard format created.
+- Can export the information using the API provided in the library back in LLVM and use the information for any purpose.
+- This library also provides a test-suite using which one can analyze their soundness and precision score of their implementation.
+- Standard format makes use of [JSON](https://www.json.org/json-en.html) for representing the Points-to information.
+- Sample .pt dump can be accessed [here](./sample.pt.json).
+- We use [this](https://github.com/nlohmann/json) library to serialize/deserialize the input.
 
-You can use the [editor on GitHub](https://github.com/mehul11jain/libPointsToDump/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+#### Public members
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+- To specify the type of pointer-pointee relation we have PointeeType defined:
+   ```
+      enum PointeeType{
+        MustPointee,
+        MayPointee
+      } 
+    ```
+- Analysis can be classified into following types in our standard format:
+  ```
+    enum AnalysisType{
+       FlowInSensitive,
+       FlowSensitive,
+       ContextSensitive
+    }
+  ```
+  
+### API Functionalities
+* #### Functions to Create the standard .pt dump.
+     - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)`
+        - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` as third argument.
+        - To add may Point-to information to the pt dump we must provide `PointeeType::MayPointee` as third argument.
+        - Returns 1 if success.     
+     - `bool PointsToInfoAt(llvm::Instruction*)`
+       - To specify the instruction for which points-to relation is being defined. 
+       - Returns 1 if success.
+     - `bool AddProcdureInfo(llvm::Function*)`
+       - To specify the Function in which the instruction is present. 
+       - Returns 1 if success.
+     - `bool AddBasicBlockInfo(llvm::BasicBlock*)`
+       - To specify the Basic Block of current function we are specifying points-to information for. 
+       - Returns 1 if success.
+     - `bool isValidPTFormat(...)`
+       - To Check whether the .pt file created is according to the correct syntax.
+       - Returns 1 if the .pt file is according to correct syntax.
 
-### Markdown
-
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
-
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/mehul11jain/libPointsToDump/settings). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+- #### Functions to query the information from the .pt dump.
+     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`
+       - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
+       - Returns the vector of pointer-pointee pair.
+     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMayPointsPairsAt(llvm::Instruction*)`
+       - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
+       - Returns the vector of pointer-pointee pair.
+     - `void PrintPointsToDump(...)`
+       - Prints the points-to information in a file.
+     - `void printToDot(...)`
+       - Prints the points-to information in form of a dot file to visualize it as points-to graph.
+     - `bool isMustPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
+       - Return 1 if the specified pointer-pointee pair has a Must relationship at the given instruction.
+     - `bool isMayPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
+       - Return 1 if the specified pointer-pointee pair has a May relationship at the given instruction. 
+     - `std::vector<llvm::Value*> getPointeeOf(llvm::Instruction, llvm::Value*)`
+       - Return a vector of all the pointees of a given pointer at the specified instruction.
+    
+- #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision.
