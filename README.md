@@ -1,5 +1,5 @@
 # libPointsToDump
-
+[![Build Status](https://travis-ci.com/mehul11jain/libPointsToDump.svg?token=uaLKCyzaK4p9XPrt7zpP&branch=main)](https://travis-ci.com/mehul11jain/libPointsToDump)
 - Created a standard format to dump Points-to-Analysis in the specified format.
 - Provides API to any Analysis writer to dump the information in the standard format created.
 - Can export the information using the API provided in the library back in LLVM and use the information for any purpose.
