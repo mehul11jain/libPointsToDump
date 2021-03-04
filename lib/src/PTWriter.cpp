@@ -3,7 +3,6 @@
 
 bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBlock* currBB, llvm::Instruction* currInst, llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
 {
-
     if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
         std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
         return 0;
