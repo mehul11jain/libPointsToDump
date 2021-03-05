@@ -7,10 +7,7 @@ bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBl
         std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
         return 0;
     }
-    if(Atype == PTDump::AnalysisType::FlowInsensitive)
-    {        
-        
-    }
+    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
     else if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
         if(latestFunction.empty() || latestFunction.top() != currFunc)
@@ -31,19 +28,13 @@ bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBl
         }
         addPointsTo(Pointer, Pointee, type);
     }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive)
-    {
-
-    }
+    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
 bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
 {
     // To implement  
-    if(Atype == PTDump::AnalysisType::FlowInsensitive)
-    {        
-        
-    }
+    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
     else if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
         if(latestBB.empty()){
@@ -123,19 +114,13 @@ bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, P
             }
         }
     }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive)
-    {
-
-    }
+    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
 
 bool PTDump::PTWriter::AddProcedureInfo(llvm::Function* currFunc)
 {
-    if(Atype == PTDump::AnalysisType::FlowInsensitive)
-    {
-
-    }
+    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
     else if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
         std::string FuncName = currFunc->getName().str();
@@ -149,10 +134,7 @@ bool PTDump::PTWriter::AddProcedureInfo(llvm::Function* currFunc)
 
         writer["FlowSensitivePointsToInfo"]["Procedure"] += procObj;        
     }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive)
-    {
-
-    }
+    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 
 }
@@ -160,10 +142,7 @@ bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB){
     
     llvm::Function* currFunc = latestFunction.top();
 
-    if(Atype == PTDump::AnalysisType::FlowInsensitive)
-    {
-
-    }
+    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
     else if(Atype == PTDump::AnalysisType::FlowSensitive)
     {                                
         json *ProcedureArray = &(writer["FlowSensitivePointsToInfo"]["Procedure"]);        
@@ -180,10 +159,7 @@ bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB){
             }
         }        
     }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive)
-    {
-
-    }
+    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
 bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
@@ -191,10 +167,7 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
     llvm::Function* currFunc = latestFunction.top();
     llvm::BasicBlock* currBB = latestBB.top();
 
-    if(Atype == PTDump::AnalysisType::FlowInsensitive)
-    {
-
-    }
+    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
     else if(Atype == PTDump::AnalysisType::FlowSensitive)
     {                                
         json *ProcedureArray = &(writer["FlowSensitivePointsToInfo"]["Procedure"]);
@@ -222,18 +195,11 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
             }
         }
     }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive)
-    {
-
-    }
+    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
-
-
-
 }
 void PTDump::PTWriter::WriteToJson(std::string Filename){
     std::string fname = Filename + ".pt.json";
     std::ofstream out(fname);
     out << std::setw(4) << writer << std::endl;
-
 }

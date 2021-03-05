@@ -4,12 +4,12 @@
 #include <fstream>
 #include <stack>
 #include <nlohmann/json.hpp>
+#include <iomanip>
 #include "llvm/IR/Function.h"
 #include "llvm/IR/Instruction.h"
 #include "llvm/IR/BasicBlock.h"
 #include "llvm/ADT/StringRef.h"
 #include "llvm/Support/raw_ostream.h"
-#include <iomanip>
 
 using json = nlohmann::json;
 
