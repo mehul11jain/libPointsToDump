@@ -1,6 +1,6 @@
 # libPointsToDump
 [![Build Status](https://travis-ci.com/mehul11jain/libPointsToDump.svg?token=uaLKCyzaK4p9XPrt7zpP&branch=main)](https://travis-ci.com/mehul11jain/libPointsToDump)
-[![CodeScene general](https://codescene.io/images/analyzed-by-codescene-badge.svg)](https://codescene.io/projects/13600)
+[![CodeScene Code Health](https://codescene.io/projects/13600/status-badges/code-health)](https://codescene.io/projects/13600)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 - Created a standard format to dump Points-to-Analysis in the specified format.
 - Provides API to any Analysis writer to dump the information in the standard format created.
