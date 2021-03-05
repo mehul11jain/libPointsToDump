@@ -136,10 +136,8 @@ bool PTDump::PTWriter::AddProcedureInfo(llvm::Function* currFunc)
     }
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
-
 }
 bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB){
-    
     llvm::Function* currFunc = latestFunction.top();
 
     if(Atype == PTDump::AnalysisType::FlowInsensitive){}
