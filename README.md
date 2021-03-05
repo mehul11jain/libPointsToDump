@@ -1,5 +1,6 @@
 # libPointsToDump
 [![Build Status](https://travis-ci.com/mehul11jain/libPointsToDump.svg?token=uaLKCyzaK4p9XPrt7zpP&branch=main)](https://travis-ci.com/mehul11jain/libPointsToDump)
+[![CodeFactor](https://www.codefactor.io/repository/github/mehul11jain/libpointstodump/badge)](https://www.codefactor.io/repository/github/mehul11jain/libpointstodump)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 - Created a standard format to dump Points-to-Analysis in the specified format.
 - Provides API to any Analysis writer to dump the information in the standard format created.
