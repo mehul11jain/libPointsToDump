@@ -1,6 +1,25 @@
 #include "PTWriter.h"
 
-
+PTDump::PTWriter::PTWriter()
+{
+    Atype = FlowInsensitive;
+    fileName = "default";
+    writer["FlowInsensitivePointsToInfo"] = json::object();
+    writer["FlowSensitivePointsToInfo"] = json::object();
+    writer["ContextSensitivePointsToInfo"] = json::object();
+}
+PTDump::PTWriter::PTWriter(PTDump::AnalysisType type, std::string File)
+{
+    Atype = type;
+    fileName = File;
+    writer["FlowInsensitivePointsToInfo"] = json::object();
+    writer["FlowSensitivePointsToInfo"] = json::object();
+    writer["ContextSensitivePointsToInfo"] = json::object();
+}
+PTDump::PTWriter::~PTWriter()
+{
+    WriteToJson(fileName);
+}
 bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBlock* currBB, llvm::Instruction* currInst, llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
 {
     if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
@@ -137,7 +156,8 @@ bool PTDump::PTWriter::AddProcedureInfo(llvm::Function* currFunc)
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
-bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB){
+bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB)
+{
     llvm::Function* currFunc = latestFunction.top();
 
     if(Atype == PTDump::AnalysisType::FlowInsensitive){}
@@ -196,7 +216,8 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
-void PTDump::PTWriter::WriteToJson(std::string Filename){
+void PTDump::PTWriter::WriteToJson(std::string Filename)
+{
     std::string fname = Filename + ".pt.json";
     std::ofstream out(fname);
     out << std::setw(4) << writer << std::endl;

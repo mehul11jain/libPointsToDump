@@ -31,25 +31,15 @@ namespace PTDump
     {
         json writer;
         AnalysisType Atype;
+        std::string fileName;
         std::stack<llvm::BasicBlock*> latestBB;
         std::stack<llvm::Function*> latestFunction;  
         std::stack<llvm::Instruction*> latestInst;        
 
     public:
-        PTWriter()
-        {
-            Atype = FlowInsensitive;
-            writer["FlowInsensitivePointsToInfo"] = json::object();
-            writer["FlowSensitivePointsToInfo"] = json::object();
-            writer["ContextSensitivePointsToInfo"] = json::object();
-        }
-        PTWriter(AnalysisType type)
-        {
-            Atype = type;
-            writer["FlowInsensitivePointsToInfo"] = json::object();
-            writer["FlowSensitivePointsToInfo"] = json::object();
-            writer["ContextSensitivePointsToInfo"] = json::object();
-        }
+        PTWriter();
+        ~PTWriter();        
+        PTWriter(AnalysisType, std::string);        
         bool addPointsTo(llvm::Value *, llvm::Value *, PointeeType);
         bool PointsToInfoAt(llvm::Instruction *);
         bool AddPointsToinfoAt(llvm::Function*, llvm::BasicBlock*, llvm::Instruction*, llvm::Value*, llvm::Value*, PointeeType);
