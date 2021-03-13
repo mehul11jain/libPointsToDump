@@ -140,7 +140,75 @@ std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMayPointsT
     return result;
 }
 
-void PTDump::PTReader::printToDot(llvm::Instruction*)
+void PTDump::PTReader::printToDot(llvm::Instruction* Inst)
 {
-    
+    std::vector<std::pair<std::string, std::string>> MayPointsToSet, MustPointsToSet;
+    MayPointsToSet = getMayPointsToPairsAt(Inst);
+    MustPointsToSet = getMustPointsToPairsAt(Inst);
+
+    std::set<std::string> Nodes;
+    for(auto x : MayPointsToSet){
+        Nodes.insert(x.first);
+        Nodes.insert(x.second);
+    }
+    for(auto x : MustPointsToSet){
+        Nodes.insert(x.first);
+        Nodes.insert(x.second);
+    }
+    std::string str;
+    llvm::raw_string_ostream ss(str);
+    ss << *Inst;    
+    std::map<std::string, int> NodeMap;
+    std::ofstream fstr;
+    fstr.open("test.dot");
+    fstr << "digraph {\n";
+    fstr << "label=\" Points-To graph At " << ss.str() <<"\"";
+    fstr << "rankdir=\"LR\"\n";
+    fstr << "node[shape=circle, width=0.5, color=lightblue2, style=filled]\n";
+    int i = 1;
+    for(auto n : Nodes)    
+    {
+        NodeMap[n] = i;
+        fstr << i++ << " [label=\"" << n << "\"]\n";
+    }    
+    for(auto x : MayPointsToSet)
+    {
+        fstr << NodeMap[x.first] << " -> " << NodeMap[x.second] << ";\n";
+    }
+    fstr << "}\n";
+    fstr.close();
+}
+bool PTDump::PTReader::isMayPointee(llvm::Instruction* Inst, llvm::Value* Pointer, llvm::Value* Pointee)
+{
+    std::vector<std::pair<std::string,std::string>> MayPointsToSet = getMayPointsToPairsAt(Inst);
+    std::string PointerStr = Pointer->getName().str();
+    std::string PointeeStr = Pointee->getName().str();
+    std::pair<std::string, std::string> Pointer_Pointee_pair = std::make_pair(PointerStr,PointeeStr);
+
+    for(auto pairs : MayPointsToSet)
+    {
+        if(pairs == Pointer_Pointee_pair)
+        {
+            return 1;
+        }
+    }
+    return 0;
+
+}
+
+bool PTDump::PTReader::isMustPointee(llvm::Instruction* Inst, llvm::Value* Pointer, llvm::Value* Pointee)
+{
+    std::vector<std::pair<std::string,std::string>> MustPointsToSet = getMustPointsToPairsAt(Inst);
+    std::string PointerStr = Pointer->getName().str();
+    std::string PointeeStr = Pointee->getName().str();
+    std::pair<std::string, std::string> Pointer_Pointee_pair = std::make_pair(PointerStr,PointeeStr);
+
+    for(auto pairs : MustPointsToSet)
+    {
+        if(pairs == Pointer_Pointee_pair)
+        {
+            return 1;
+        }
+    }
+    return 0;
 }

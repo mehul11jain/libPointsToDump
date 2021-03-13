@@ -4,6 +4,7 @@
 #include <fstream>
 #include <stack>
 #include <string>
+#include <set>
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include "llvm/IR/Function.h"
