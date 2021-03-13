@@ -1,5 +1,11 @@
 #include "PTWriter.h"
 
+/**
+ * @brief Construct a new PTDump::PTWriter::PTWriter object.
+ * \par Default Constructor for creating a PTWriter object.
+ * \par Analysis type is FlowInsensitive by default.
+ * 
+ */
 PTDump::PTWriter::PTWriter()
 {
     Atype = FlowInsensitive;
@@ -8,6 +14,12 @@ PTDump::PTWriter::PTWriter()
     writer["FlowSensitivePointsToInfo"] = json::object();
     writer["ContextSensitivePointsToInfo"] = json::object();
 }
+/**
+ * @brief Construct a new PTDump::PTWriter::PTWriter object
+ * 
+ * @param type Defines the Analysis Type.
+ * @param File represents the file name for json.
+ */
 PTDump::PTWriter::PTWriter(PTDump::AnalysisType type, std::string File)
 {
     Atype = type;
@@ -16,10 +28,26 @@ PTDump::PTWriter::PTWriter(PTDump::AnalysisType type, std::string File)
     writer["FlowSensitivePointsToInfo"] = json::object();
     writer["ContextSensitivePointsToInfo"] = json::object();
 }
+/**
+ * @brief Destroy the PTDump::PTWriter::PTWriter object
+ * 
+ */
 PTDump::PTWriter::~PTWriter()
 {
     WriteToJson(fileName);
 }
+/**
+ * @brief Wrapper Function for user to invoke to store the points-to information in json.
+ * 
+ * @param currFunc current Function under analysis.
+ * @param currBB   current BasicBlock under analysis.
+ * @param currInst current Instruction to be processed.
+ * @param Pointer  Pointer variable for which pointee set needs to be updated.
+ * @param Pointee Pointee to be added.
+ * @param type Type of the Pointee i.e either Must or May.
+ * @return true: Action executed successfully.
+ * @return false: Action Failed. 
+ */
 bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBlock* currBB, llvm::Instruction* currInst, llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
 {
     if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
@@ -50,6 +78,15 @@ bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBl
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
+/**
+ * @brief Adds the Points-to Information in the json.
+ * 
+ * @param Pointer Pointer variable for which pointee set needs to be updated.
+ * @param Pointee Pointee to be added.
+ * @param type Type of the Pointee i.e either Must or May.
+ * @return true: Action executed successfully.
+ * @return false: Action Failed.
+ */
 bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
 {
     // To implement  
@@ -147,7 +184,13 @@ bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, P
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
-
+/**
+ * @brief Add the Function information of the instruction we are currently processing.
+ * 
+ * @param currFunc Function to which current Instruction belongs to.
+ * @return true: Action executed successfully.
+ * @return false: Action Failed. 
+ */
 bool PTDump::PTWriter::AddProcedureInfo(llvm::Function* currFunc)
 {
     if(Atype == PTDump::AnalysisType::FlowInsensitive){}
@@ -167,6 +210,13 @@ bool PTDump::PTWriter::AddProcedureInfo(llvm::Function* currFunc)
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
+/**
+ * @brief Add Information about the basic block to which the current Instruction belongs to.
+ * 
+ * @param currBB Current Basic Block to which current instruction belongs.
+ * @return true: Action executed successfully.
+ * @return false: Action Failed.
+ */
 bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB)
 {
     llvm::Function* currFunc = latestFunction.top();
@@ -191,6 +241,13 @@ bool PTDump::PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB)
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
+/**
+ * @brief 
+ * 
+ * @param Inst 
+ * @return true: Action executed successfully.
+ * @return false: Action Failed. 
+ */
 bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
 {
     llvm::Function* currFunc = latestFunction.top();
@@ -234,6 +291,11 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
     else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
+/**
+ * @brief Creates a new JSON file and dump the points-to information into it.
+ * 
+ * @param Filename Name to be given to the newly created JSON file.
+ */
 void PTDump::PTWriter::WriteToJson(std::string Filename)
 {
     std::string fname = Filename + ".pt.json";

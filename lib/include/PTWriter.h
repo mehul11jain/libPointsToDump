@@ -15,18 +15,29 @@ using json = nlohmann::json;
 
 namespace PTDump
 {
+    /**
+     * @brief Specifies the Type of Analysis for which we are storing the points-to information for.
+     * 
+     */
     enum AnalysisType
     {
         FlowInsensitive,
         FlowSensitive,
         ContextSensitive
     };
+    /**
+     * @brief Specifies the Type of Pointee i.e Either may/must.
+     * 
+     */
     enum PointeeType
     {
         MayPointee,
         MustPointee
     };
-
+    /**
+     * @brief A class to Dump the points-to information in the standard .pt format.
+     * 
+     */
     class PTWriter
     {
         json writer;

@@ -1,25 +1,50 @@
 #include "PTReader.h"
 
+/**
+ * @brief Construct a new PTDump::PTReader::PTReader object
+ * 
+ * @param fName 
+ */
 PTDump::PTReader::PTReader(std::string fName)
 {
     fileName = fName;
     PathToFile = "./";
     init();
 }
+/**
+ * @brief Construct a new PTDump::PTReader::PTReader object
+ * 
+ * @param fName 
+ * @param path 
+ */
 PTDump::PTReader::PTReader(std::string fName, std::string path)
 {
     fileName = fName;
     PathToFile = path;
     init();
 }
+/**
+ * @brief Destroy the PTDump::PTReader::PTReader object
+ * 
+ */
 PTDump::PTReader::~PTReader()
 {
 }
+/**
+ * @brief 
+ * 
+ */
 void PTDump::PTReader::init()
 {
     std::ifstream input_json_file(PathToFile + fileName + ".pt.json");
     input_json_file >> reader;
 }
+/**
+ * @brief 
+ * 
+ * @param Inst 
+ * @return std::vector<std::pair<std::string, std::string>> 
+ */
 std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMustPointsToPairsAt(llvm::Instruction *Inst)
 {
 
@@ -80,6 +105,12 @@ std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMustPoints
     }
     return result;
 }
+/**
+ * @brief 
+ * 
+ * @param Inst 
+ * @return std::vector<std::pair<std::string, std::string>> 
+ */
 std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMayPointsToPairsAt(llvm::Instruction *Inst)
 {
 
@@ -140,7 +171,11 @@ std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMayPointsT
     }
     return result;
 }
-
+/**
+ * @brief 
+ * 
+ * @param Inst 
+ */
 void PTDump::PTReader::printToDot(llvm::Instruction *Inst)
 {
     std::vector<std::pair<std::string, std::string>> MayPointsToSet, MustPointsToSet;
@@ -181,6 +216,15 @@ void PTDump::PTReader::printToDot(llvm::Instruction *Inst)
     fstr << "}\n";
     fstr.close();
 }
+/**
+ * @brief 
+ * 
+ * @param Inst 
+ * @param Pointer 
+ * @param Pointee 
+ * @return true 
+ * @return false 
+ */
 bool PTDump::PTReader::isMayPointee(llvm::Instruction *Inst, llvm::Value *Pointer, llvm::Value *Pointee)
 {
     std::vector<std::pair<std::string, std::string>> MayPointsToSet = getMayPointsToPairsAt(Inst);
@@ -213,6 +257,10 @@ bool PTDump::PTReader::isMustPointee(llvm::Instruction *Inst, llvm::Value *Point
     }
     return 0;
 }
+/**
+ * @brief 
+ * 
+ */
 void PTDump::PTReader::printPointsToDump()
 {
     std::ofstream fstr;
@@ -265,6 +313,13 @@ void PTDump::PTReader::printPointsToDump()
     }
     fstr.close();
 }
+/**
+ * @brief 
+ * 
+ * @param Inst 
+ * @param Pointer 
+ * @return std::vector<std::string> 
+ */
 std::vector<std::string> PTDump::PTReader::getPointeesOf(llvm::Instruction* Inst, llvm::Value* Pointer)
 {
     std::vector<std::string> result;
