@@ -48,10 +48,10 @@
        - Returns 1 if the .pt file is according to correct syntax.
 
 - #### Functions to query the information from the .pt dump.
-     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMustPointsPairsAt(llvm::Instruction*)`
+     - `std::vector<std::pair<std::string,std::string>> getMustPointsPairsAt(llvm::Instruction*)`
        - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
        - Returns the vector of pointer-pointee pair.
-     - `std::vector<std::pair<llvm::Value*,llvm::Value*>> getMayPointsPairsAt(llvm::Instruction*)`
+     - `std::vector<std::pair<std::string,std::string>> getMayPointsPairsAt(llvm::Instruction*)`
        - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
        - Returns the vector of pointer-pointee pair.
      - `void PrintPointsToDump(...)`
@@ -62,7 +62,5 @@
        - Return 1 if the specified pointer-pointee pair has a Must relationship at the given instruction.
      - `bool isMayPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
        - Return 1 if the specified pointer-pointee pair has a May relationship at the given instruction. 
-     - `std::vector<llvm::Value*> getPointeeOf(llvm::Instruction, llvm::Value*)`
-       - Return a vector of all the pointees of a given pointer at the specified instruction.
-    
-- #### Functions to evaluate the Points-to Analysis implmentation for soundness and Precision.
+     - `std::vector<std::string> getPointeeOf(llvm::Instruction, llvm::Value*)`
+       - Return a vector of all the pointees of a given pointer at the specified instruction.    
