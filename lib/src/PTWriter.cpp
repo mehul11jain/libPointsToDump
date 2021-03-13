@@ -73,6 +73,18 @@ bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, P
         llvm::Function* LastProc = latestFunction.top();
         llvm::Instruction* LastInst = latestInst.top();
 
+        int Inst_id;
+        int Inst_Count = 1;
+        for(llvm::Instruction& I : *LastBB)
+        {
+            if(&I == LastInst)
+            {
+                Inst_id = Inst_Count;
+                break;
+            }
+            Inst_Count++;
+        }
+
         json *ProcedureArray = &(writer["FlowSensitivePointsToInfo"]["Procedure"]);
         for(auto it = (*ProcedureArray).begin(); it != (*ProcedureArray).end(); it++)
         {
@@ -81,13 +93,10 @@ bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, P
                 for(auto i = ((*it)["BasicBlocks"]).begin(); i != ((*it)["BasicBlocks"]).end(); i++)
                 {
                     if((*i)["BBid"] == LastBB->getName().str())
-                    {                        
-                        std::string str;
-                        llvm::raw_string_ostream ss(str);
-                        ss << *LastInst;
+                    {                                                
                         for(auto i2 = (*i)["Instructions"].begin(); i2 != (*i)["Instructions"].end(); i2++)
                         {
-                            if((*i2)["Instructionid"] == ss.str()){
+                            if((*i2)["Instructionid"] == Inst_id){
                                 bool search_poiner = 0;
                                 for(auto i3 = (*i2)["PointsToSet"].begin(); i3 != (*i2)["PointsToSet"].end(); i3++)
                                 {
@@ -101,6 +110,7 @@ bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, P
                                         Pointee->getType()->print(rso2);
 
                                         PointeeObj["type"] = rso2.str();
+                                        PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
                                         (*i3)["PointeeSet"] += PointeeObj;
                                         search_poiner = 1;
                                     }
@@ -123,6 +133,7 @@ bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, P
                                     Pointee->getType()->print(rso2);
 
                                     PointeeObj["type"] = rso2.str();
+                                    PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
                                     obj["PointeeSet"] += PointeeObj;
                                     (*i2)["PointsToSet"] += obj;
                                 }
@@ -185,6 +196,17 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
     llvm::Function* currFunc = latestFunction.top();
     llvm::BasicBlock* currBB = latestBB.top();
 
+    int Inst_id;
+    int Inst_Count = 1;
+    for(llvm::Instruction& I : *currBB)
+    {
+        if(&I == Inst){
+            Inst_id = Inst_Count;
+            break;
+        }
+        Inst_Count++;
+    }
+
     if(Atype == PTDump::AnalysisType::FlowInsensitive){}
     else if(Atype == PTDump::AnalysisType::FlowSensitive)
     {                                
@@ -197,13 +219,9 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
                 {
                     if((*i)["BBid"] == currBB->getName().str())
                     {
-                        json obj = json::object();
+                        json obj = json::object();                        
 
-                        std::string str;
-                        llvm::raw_string_ostream ss(str);
-                        ss << *Inst;
-
-                        obj["Instructionid"] = ss.str();
+                        obj["Instructionid"] = Inst_id;
                         if(obj["PointsToSet"].empty())
                             obj["PointsToSet"] = json::array();
                         
