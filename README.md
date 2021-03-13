@@ -54,9 +54,9 @@
      - `std::vector<std::pair<std::string,std::string>> getMayPointsPairsAt(llvm::Instruction*)`
        - Finds all the Must Points-to pairs from the .pt dump for the given instruction.
        - Returns the vector of pointer-pointee pair.
-     - `void PrintPointsToDump(...)`
+     - `void PrintPointsToDump()`
        - Prints the points-to information in a file.
-     - `void printToDot(...)`
+     - `void printToDot(llvm::Instruction*)`
        - Prints the points-to information in form of a dot file to visualize it as points-to graph.
      - `bool isMustPointee(llvm::Instruction, llvm::Value*, llvm::Value*)`
        - Return 1 if the specified pointer-pointee pair has a Must relationship at the given instruction.
