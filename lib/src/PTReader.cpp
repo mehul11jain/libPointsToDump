@@ -3,7 +3,7 @@
 /**
  * @brief Construct a new PTDump::PTReader::PTReader object
  * 
- * @param fName 
+ * @param fName Name of the file to be queried.
  */
 PTDump::PTReader::PTReader(std::string fName)
 {
@@ -14,8 +14,8 @@ PTDump::PTReader::PTReader(std::string fName)
 /**
  * @brief Construct a new PTDump::PTReader::PTReader object
  * 
- * @param fName 
- * @param path 
+ * @param fName Name of the file to be queried.
+ * @param path Path to the folder containing the file.
  */
 PTDump::PTReader::PTReader(std::string fName, std::string path)
 {
@@ -31,7 +31,7 @@ PTDump::PTReader::~PTReader()
 {
 }
 /**
- * @brief 
+ * @brief Initializa a JSON Object using the input JSON File.
  * 
  */
 void PTDump::PTReader::init()
@@ -40,10 +40,10 @@ void PTDump::PTReader::init()
     input_json_file >> reader;
 }
 /**
- * @brief 
+ * @brief Returns all Must Points-to piars at a given Instruction.
  * 
- * @param Inst 
- * @return std::vector<std::pair<std::string, std::string>> 
+ * @param Inst intruction at which points-to info is queried.
+ * @return std::vector<std::pair<std::string, std::string>> All Must points-to pairs.
  */
 std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMustPointsToPairsAt(llvm::Instruction *Inst)
 {
@@ -106,10 +106,10 @@ std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMustPoints
     return result;
 }
 /**
- * @brief 
+ * @brief Returns All may Points-to pairs at a given instruction.
  * 
- * @param Inst 
- * @return std::vector<std::pair<std::string, std::string>> 
+ * @param Inst Instruction at which points-to info is queried.
+ * @return std::vector<std::pair<std::string, std::string>> All may Points-to pairs.
  */
 std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMayPointsToPairsAt(llvm::Instruction *Inst)
 {
@@ -172,9 +172,9 @@ std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMayPointsT
     return result;
 }
 /**
- * @brief 
+ * @brief Prints the points-to graph at a given instruction.
  * 
- * @param Inst 
+ * @param Inst The Instruction at which the points-to graph needs to be printed.
  */
 void PTDump::PTReader::printToDot(llvm::Instruction *Inst)
 {
@@ -217,11 +217,11 @@ void PTDump::PTReader::printToDot(llvm::Instruction *Inst)
     fstr.close();
 }
 /**
- * @brief 
+ * @brief Determines whether a given pointee is a may-pointee or not.
  * 
- * @param Inst 
- * @param Pointer 
- * @param Pointee 
+ * @param Inst Instruction at which the information is needed.
+ * @param Pointer Pointer for which may-pointee needs to be checked,
+ * @param Pointee Pointee to be checked whether is may-pointee or not.
  * @return true 
  * @return false 
  */
@@ -241,6 +241,15 @@ bool PTDump::PTReader::isMayPointee(llvm::Instruction *Inst, llvm::Value *Pointe
     }
     return 0;
 }
+/**
+ * @brief Determines whether a given pointee is a must pointee or not.
+ * 
+ * @param Inst Instruction at which the information is needed.
+ * @param Pointer Pointer for which must-pointee needs to be checked,
+ * @param Pointee Pointee to be checked whether is must-pointee or not.
+ * @return true 
+ * @return false 
+ */
 bool PTDump::PTReader::isMustPointee(llvm::Instruction *Inst, llvm::Value *Pointer, llvm::Value *Pointee)
 {
     std::vector<std::pair<std::string, std::string>> MustPointsToSet = getMustPointsToPairsAt(Inst);
@@ -258,7 +267,7 @@ bool PTDump::PTReader::isMustPointee(llvm::Instruction *Inst, llvm::Value *Point
     return 0;
 }
 /**
- * @brief 
+ * @brief Prints the enitre points-to information in a result.log file.
  * 
  */
 void PTDump::PTReader::printPointsToDump()
@@ -314,10 +323,10 @@ void PTDump::PTReader::printPointsToDump()
     fstr.close();
 }
 /**
- * @brief 
+ * @brief Finds all the Pointees of a given pointer at a given instruction.
  * 
- * @param Inst 
- * @param Pointer 
+ * @param Inst Instruction at which the information is required.
+ * @param Pointer Pointer for which all the Pointees are needed.
  * @return std::vector<std::string> 
  */
 std::vector<std::string> PTDump::PTReader::getPointeesOf(llvm::Instruction* Inst, llvm::Value* Pointer)
