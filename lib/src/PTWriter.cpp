@@ -48,7 +48,7 @@ PTDump::PTWriter::~PTWriter()
  * @return true: Action executed successfully.
  * @return false: Action Failed. 
  */
-bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBlock* currBB, llvm::Instruction* currInst, llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
+bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBlock* currBB, llvm::Instruction* currInst, const llvm::Value* Pointer, const llvm::Value* Pointee, PointeeType type)
 {
     if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
         std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
@@ -87,7 +87,7 @@ bool PTDump::PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBl
  * @return true: Action executed successfully.
  * @return false: Action Failed.
  */
-bool PTDump::PTWriter::addPointsTo(llvm::Value* Pointer, llvm::Value* Pointee, PointeeType type)
+ bool PTDump::PTWriter::addPointsTo(const llvm::Value* Pointer, const llvm::Value* Pointee, PointeeType type)
 {
     // To implement  
     if(Atype == PTDump::AnalysisType::FlowInsensitive){}

@@ -285,8 +285,8 @@ void PTDump::PTReader::printPointsToDump()
             fstr << "Procedure:\t" << proc["Functionid"] << "\n";
             for (auto BB : proc["BasicBlocks"])
             {
-                fstr << "Basic Block:\t" << BB["BBid"] << "\n";
-                fstr << "In[" << BB["BBid"] << "]: {";
+                fstr << "\tBasic Block:\t" << BB["BBid"] << "\n";
+                fstr << "\t\tIn[" << BB["BBid"] << "]: {";
                 auto FirstInst = *(BB["Instructions"].begin());
                 int cnt = 0;
                 for (auto i : FirstInst["PointsToSet"])
@@ -300,7 +300,7 @@ void PTDump::PTReader::printPointsToDump()
                     }
                 }
                 fstr << " }\n";
-                fstr << "Out[" << BB["BBid"] << "]: {";
+                fstr << "\t\tOut[" << BB["BBid"] << "]: {";
                 auto LastInst = BB["Instructions"].back();
                 cnt = 0;
                 for (auto i : LastInst["PointsToSet"])

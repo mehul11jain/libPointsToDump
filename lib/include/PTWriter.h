@@ -51,9 +51,9 @@ namespace PTDump
         PTWriter();
         ~PTWriter();        
         PTWriter(AnalysisType, std::string);        
-        bool addPointsTo(llvm::Value *, llvm::Value *, PointeeType);
+        bool addPointsTo(const llvm::Value *,const llvm::Value *, PointeeType);
         bool PointsToInfoAt(llvm::Instruction *);
-        bool AddPointsToinfoAt(llvm::Function*, llvm::BasicBlock*, llvm::Instruction*, llvm::Value*, llvm::Value*, PointeeType);
+        bool AddPointsToinfoAt(llvm::Function*, llvm::BasicBlock*, llvm::Instruction*, const llvm::Value*, const llvm::Value*, PointeeType);
         bool AddProcedureInfo(llvm::Function *);
         bool AddBasicBlockInfo(llvm::BasicBlock *);
         bool isValidPTFormat(json);
