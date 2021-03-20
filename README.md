@@ -38,7 +38,7 @@
    set_target_properties(PointsToDump PROPERTIES IMPORTED_LOCATION "/usr/local/lib/libPointsToDump.so")
    ```
   
-### API Functionalities
+## API Functionalities
 * #### Functions to Create the standard .pt dump.
      - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)`
         - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` as third argument.
