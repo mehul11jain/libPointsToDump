@@ -37,25 +37,6 @@
    add_library(PointsToDump SHARED IMPORTED)
    set_target_properties(PointsToDump PROPERTIES IMPORTED_LOCATION "/usr/local/lib/libPointsToDump.so")
    ```
-
-
-#### Public members
-
-- To specify the type of pointer-pointee relation we have PointeeType defined:
-   ```
-      enum PointeeType{
-        MustPointee,
-        MayPointee
-      } 
-    ```
-- Analysis can be classified into following types in our standard format:
-  ```
-    enum AnalysisType{
-       FlowInSensitive,
-       FlowSensitive,
-       ContextSensitive
-    }
-  ```
   
 ### API Functionalities
 * #### Functions to Create the standard .pt dump.
