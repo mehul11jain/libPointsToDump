@@ -10,25 +10,35 @@
 - Sample .pt dump can be accessed [here](./sample.pt.json).
 - We use [this](https://github.com/nlohmann/json) library to serialize/deserialize the input.
 
-#### Public members
-
-- To specify the type of pointer-pointee relation we have PointeeType defined:
+## Installation
+-  First clone this repoisorty.
    ```
-      enum PointeeType{
-        MustPointee,
-        MayPointee
-      } 
-    ```
-- Analysis can be classified into following types in our standard format:
-  ```
-    enum AnalysisType{
-       FlowInSensitive,
-       FlowSensitive,
-       ContextSensitive
-    }
-  ```
+   git clone https://github.com/mehul11jain/libPointsToDump.git
+   ```
+-  Building the project
+   - Make a folder build inside the cloned repository.
+   ```
+   mkdir build
+   cd build
+   ```
+   - Run the following commands.
+   ```
+   cmake ..
+   sudo make install  
+   ```
+## Using the library
+-  To use this library we need working implementation of Pointer-analysis in llvm compiler tool-chain.
+-  If the project is build using cmake genetated build files. Following statements need to be added to the CMakeLists.txt where the target is being generated.
+   ```
+   target_link_libraries(<TARGET_NAME>  PointsToDump)
+   ```
+-  We need to add the following lines of code to the outermost CMakeLists.txt
+   ```
+   add_library(PointsToDump SHARED IMPORTED)
+   set_target_properties(PointsToDump PROPERTIES IMPORTED_LOCATION "/usr/local/lib/libPointsToDump.so")
+   ```
   
-### API Functionalities
+## API Functionalities
 * #### Functions to Create the standard .pt dump.
      - `bool addPointsTo(llvm::Value*, llvm::Value*, PointeeType)`
         - To add must Point-to information to the pt dump we must provide `PointeeType::MustPointee` as third argument.
