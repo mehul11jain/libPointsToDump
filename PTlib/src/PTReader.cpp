@@ -179,8 +179,9 @@ std::vector<std::pair<std::string, std::string>> PTDump::PTReader::getMayPointsT
 void PTDump::PTReader::printToDot(llvm::Instruction *Inst)
 {
     std::vector<std::pair<std::string, std::string>> MayPointsToSet, MustPointsToSet;
+    
     MayPointsToSet = getMayPointsToPairsAt(Inst);
-    MustPointsToSet = getMustPointsToPairsAt(Inst);
+    MustPointsToSet = getMustPointsToPairsAt(Inst);    
 
     std::set<std::string> Nodes;
     for (auto x : MayPointsToSet)
@@ -278,7 +279,7 @@ void PTDump::PTReader::printPointsToDump()
     {
     }
     else if (!reader["FlowSensitivePointsToInfo"].empty())
-    {
+    {        
         auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
         for (auto proc : ProcList)
         {

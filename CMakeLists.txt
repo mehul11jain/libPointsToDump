@@ -13,10 +13,8 @@ find_package(LLVM REQUIRED CONFIG)
 add_definitions(${LLVM_DEFINITIONS})
 include_directories(${LLVM_INCLUDE_DIRS})
 link_directories(${LLVM_LIBRARY_DIRS})
+list(APPEND CMAKE_MODULE_PATH "${LLVM_CMAKE_DIR}")
+include(AddLLVM)
 
-include_directories(./lib/include)
-add_subdirectory(lib)
-
-include(GNUInstallDirs)
-install(DIRECTORY
-lib/include/ DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/${PROJECT_NAME})
+include_directories(./PTlib/include)
+add_subdirectory(PTlib)

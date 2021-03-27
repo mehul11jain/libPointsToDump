@@ -18,12 +18,14 @@ PTDump::PTWriter::PTWriter()
  * @brief Construct a new PTDump::PTWriter::PTWriter object
  * 
  * @param type Defines the Analysis Type.
+ * @param path Absolute path to write in the file.
  * @param File represents the file name for json.
  */
-PTDump::PTWriter::PTWriter(PTDump::AnalysisType type, std::string File)
+PTDump::PTWriter::PTWriter(PTDump::AnalysisType type, std::string File, std::string path)
 {
     Atype = type;
     fileName = File;
+    Output_File_Path = path;
     writer["FlowInsensitivePointsToInfo"] = json::object();
     writer["FlowSensitivePointsToInfo"] = json::object();
     writer["ContextSensitivePointsToInfo"] = json::object();
@@ -299,6 +301,6 @@ bool PTDump::PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
 void PTDump::PTWriter::WriteToJson(std::string Filename)
 {
     std::string fname = Filename + ".pt.json";
-    std::ofstream out(fname);
+    std::ofstream out(Output_File_Path + fname);
     out << std::setw(4) << writer << std::endl;
 }
