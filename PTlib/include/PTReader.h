@@ -23,21 +23,16 @@ namespace PTDump
      */
     class PTReader
     {
-        json reader;
-        std::string fileName;
-        std::string PathToFile;
+        protected:
+            json reader;
+            std::string fileName;
+            std::string PathToFile;
         public:
             PTReader(std::string);
             PTReader(std::string, std::string);
             void init();
-            ~PTReader();
-            std::vector<std::pair<std::string, std::string>> getMustPointsToPairsAt(llvm::Instruction*);
-            std::vector<std::pair<std::string, std::string>> getMayPointsToPairsAt(llvm::Instruction*);
-            void printPointsToDump();
-            void printToDot(llvm::Instruction*);
-            bool isMustPointee(llvm::Instruction*, llvm::Value*, llvm::Value*);
-            bool isMayPointee(llvm::Instruction*, llvm::Value*, llvm::Value*);
-            std::vector<std::string> getPointeesOf(llvm::Instruction*, llvm::Value*);
+            ~PTReader();            
+            virtual void printPointsToDump() = 0;
     };
 
 }// PTDump namespace ends.

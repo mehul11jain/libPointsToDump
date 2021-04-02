@@ -40,25 +40,17 @@ namespace PTDump
      */
     class PTWriter
     {
-        json writer;
-        AnalysisType Atype;
-        std::string Output_File_Path;
-        std::string fileName;
-        std::stack<llvm::BasicBlock*> latestBB;
-        std::stack<llvm::Function*> latestFunction;  
-        std::stack<llvm::Instruction*> latestInst;        
+        protected:
+            json writer;
+            AnalysisType Atype;
+            std::string Output_File_Path;
+            std::string fileName;                
 
-    public:
-        PTWriter();
-        ~PTWriter();          
-        PTWriter(AnalysisType type, std::string File, std::string path = "./");        
-        bool addPointsTo(const llvm::Value *,const llvm::Value *, PointeeType);
-        bool PointsToInfoAt(llvm::Instruction *);
-        bool AddPointsToinfoAt(llvm::Function*, llvm::BasicBlock*, llvm::Instruction*, const llvm::Value*, const llvm::Value*, PointeeType);
-        bool AddProcedureInfo(llvm::Function *);
-        bool AddBasicBlockInfo(llvm::BasicBlock *);
-        bool isValidPTFormat(json);
-        void WriteToJson(std::string);
+        public:
+            PTWriter();
+            ~PTWriter();          
+            PTWriter(AnalysisType type, std::string File, std::string path);                
+            virtual bool isValidPTFormat() = 0;
     };    
     
 };
