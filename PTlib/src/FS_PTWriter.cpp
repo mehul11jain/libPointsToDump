@@ -46,9 +46,8 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
     if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
         std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
         return 0;
-    }
-    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
-    else if(Atype == PTDump::AnalysisType::FlowSensitive)
+    }    
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
         if(latestFunction.empty() || latestFunction.top() != currFunc)
         {
@@ -67,8 +66,7 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
             PointsToInfoAt(currInst);
         }
         addPointsTo(Pointer, Pointee, type);
-    }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
+    }    
     return 1;
 }
 /**
@@ -83,8 +81,7 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
  bool PTDump::FS_PTWriter::addPointsTo(const llvm::Value* Pointer, const llvm::Value* Pointee, PointeeType type)
 {
     // To implement  
-    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
-    else if(Atype == PTDump::AnalysisType::FlowSensitive)
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
         if(latestBB.empty()){
             llvm::outs() << "Invalid use of library no info about the basic block of instruction provided";
@@ -137,7 +134,10 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
                                         
                                         std::string type_str_2;
                                         llvm::raw_string_ostream rso2(type_str_2);
-                                        Pointee->getType()->print(rso2);
+                                        if(llvm::isa<llvm::GlobalVariable>(Pointee))
+                                            Pointee->getType()->getPointerElementType()->print(rso2);
+                                        else
+                                            Pointee->getType()->print(rso2);
 
                                         PointeeObj["type"] = rso2.str();
                                         PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
@@ -152,7 +152,10 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
                                     
                                     std::string type_str;
                                     llvm::raw_string_ostream rso(type_str);
-                                    Pointer->getType()->print(rso);                                
+                                    if(llvm::isa<llvm::GlobalVariable>(Pointer))
+                                        Pointer->getType()->getPointerElementType()->print(rso);
+                                    else
+                                        Pointer->getType()->print(rso);                               
 
                                     obj["type"] = rso.str();                                                                        
                                     json PointeeObj;
@@ -160,7 +163,10 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
                                     
                                     std::string type_str_2;
                                     llvm::raw_string_ostream rso2(type_str_2);
-                                    Pointee->getType()->print(rso2);
+                                    if(llvm::isa<llvm::GlobalVariable>(Pointee))
+                                        Pointee->getType()->getPointerElementType()->print(rso2);
+                                    else
+                                        Pointee->getType()->print(rso2);
 
                                     PointeeObj["type"] = rso2.str();
                                     PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
@@ -173,8 +179,7 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
                 }
             }
         }
-    }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
+    }    
     return 1;
 }
 /**
@@ -185,9 +190,8 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
  * @return false: Action Failed. 
  */
 bool PTDump::FS_PTWriter::AddProcedureInfo(llvm::Function* currFunc)
-{
-    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
-    else if(Atype == PTDump::AnalysisType::FlowSensitive)
+{    
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
         std::string FuncName = currFunc->getName().str();
         if(writer["FlowSensitivePointsToInfo"]["Procedure"].empty())

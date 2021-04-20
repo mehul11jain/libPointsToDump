@@ -12,25 +12,21 @@
 					"Instructionid": "store i32* @a, i32** @x",
 					"PointsToSet": [
 					{
-						"type": "int**",
-						"scope": "global",
+						"type": "int**",						
 						"name": "p",
 						"PointeeSet": [
 							{
 								"Pointee": "x",
-								"type": "int*",
-								"scope": "global"
+								"type": "int*"								
 							},
 							{
-								"Pointee": "y",
-								"scope": "global",
+								"Pointee": "y",								
 								"type": "int*"
 							}
 						]
 					},
 					{
-						"type": "int**",
-						"scope": "global",
+						"type": "int**",						
 						"name": "q",
 						"PointeeSet": [
 							{
@@ -41,13 +37,11 @@
 						]
 					},
 					{
-						"type": "int*",
-						"scope": "global",
+						"type": "int*",						
 						"name": "x",
 						"PointeeSet": [
 							{
-								"Pointee": "a",
-								"scope": "global",
+								"Pointee": "a",								
 								"type": "int"
 							}
 						]

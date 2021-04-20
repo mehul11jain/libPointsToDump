@@ -50,11 +50,8 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPoi
         }
         Inst_Count++;
     }
-
-    if (!reader["FlowInsensitivePointsToInfo"].empty())
-    {
-    }
-    else if (!reader["FlowSensitivePointsToInfo"].empty())
+    
+    if (!reader["FlowSensitivePointsToInfo"].empty())
     {
         auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
         for (auto proc : ProcList)
@@ -86,10 +83,7 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPoi
                 }
             }
         }
-    }
-    else if (!reader["ContextSensitivePointsToInfo"].empty())
-    {
-    }
+    }    
     return result;
 }
 /**
@@ -117,10 +111,8 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPoin
         Inst_Count++;
     }
 
-    if (!reader["FlowInsensitivePointsToInfo"].empty())
-    {
-    }
-    else if (!reader["FlowSensitivePointsToInfo"].empty())
+    
+    if (!reader["FlowSensitivePointsToInfo"].empty())
     {
         auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
         for (auto proc : ProcList)
@@ -152,10 +144,7 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPoin
                 }
             }
         }
-    }
-    else if (!reader["ContextSensitivePointsToInfo"].empty())
-    {
-    }
+    }    
     return result;
 }
 /**
@@ -261,11 +250,8 @@ bool PTDump::FS_PTReader::isMustPointee(llvm::Instruction *Inst, llvm::Value *Po
 void PTDump::FS_PTReader::printPointsToDump()
 {
     std::ofstream fstr;
-    fstr.open("Result.log");
-    if (!reader["FlowInsensitivePointsToInfo"].empty())
-    {
-    }
-    else if (!reader["FlowSensitivePointsToInfo"].empty())
+    fstr.open("Result.log");    
+    if (!reader["FlowSensitivePointsToInfo"].empty())
     {        
         auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
         for (auto proc : ProcList)
@@ -304,10 +290,7 @@ void PTDump::FS_PTReader::printPointsToDump()
                 fstr << " }\n\n";
             }
         }
-    }
-    else if (!reader["ContextSensitivePointsToInfo"].empty())
-    {
-    }
+    }    
     fstr.close();
 }
 /**
@@ -334,11 +317,8 @@ std::vector<std::string> PTDump::FS_PTReader::getPointeesOf(llvm::Instruction* I
         }
         Inst_Count++;
     }
-
-    if (!reader["FlowInsensitivePointsToInfo"].empty())
-    {
-    }
-    else if (!reader["FlowSensitivePointsToInfo"].empty())
+    
+    if (!reader["FlowSensitivePointsToInfo"].empty())
     {
         auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
         for(auto proc : ProcList)
@@ -370,9 +350,6 @@ std::vector<std::string> PTDump::FS_PTReader::getPointeesOf(llvm::Instruction* I
                 }
             }
         }
-    }
-    else if (!reader["ContextSensitivePointsToInfo"].empty())
-    {
-    }
+    }    
     return result;
 }

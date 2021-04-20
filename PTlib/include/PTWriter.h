@@ -3,6 +3,7 @@
 #include <iostream>
 #include <fstream>
 #include <stack>
+#include <set>
 #include <nlohmann/json.hpp>
 #include <iomanip>
 #include "llvm/IR/Function.h"

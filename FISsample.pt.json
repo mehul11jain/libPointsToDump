@@ -1,0 +1,49 @@
+{
+	"FlowInsensitivePointsToInfo": {
+        "PointsToGraph" : [
+            {
+                "name" : "x",
+                "type" : "i32*",
+                "scope" : "global",
+                "procedure" : "",
+                "PointsToSet" : [
+                    {
+                        "name" : "a",
+                        "type" : "i32",
+                        "scope" : "global",
+                        "procedure" : ""
+                    },
+                    {
+                        "name" : "b",
+                        "type" : "i32",
+                        "scope" : "global",
+                        "procedure" : ""
+                    }
+                ]
+            },
+            {
+                "name" : "p",
+                "type" : "i32**",
+                "scope" : "global",
+                "procedure" : "",
+                "PointsToSet" : [
+                    {
+                        "name" : "tmp9",
+                        "type" : "i32*",
+                        "scope" : "local",
+                        "procedure" : "main"
+                    },
+                    {
+                        "name" : "tmp10",
+                        "type" : "i32*",
+                        "scope" : "local",
+                        "procedure" : "p"
+                    }
+                ]
+            }
+
+        ]
+    },
+	"FlowSensitivePointsToInfo": {},
+	"ContextSensitivePointsToInfo": {}
+}

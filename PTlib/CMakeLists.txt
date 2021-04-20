@@ -3,7 +3,9 @@ add_library(PointsToDump SHARED
     src/PTWriter.cpp      
     src/PTReader.cpp
     src/FS_PTWriter.cpp
-    src/FS_PTReader.cpp     
+    src/FS_PTReader.cpp
+    src/FIS_PTWriter.cpp
+    src/FIS_PTReader.cpp     
 )
 set_target_properties(PointsToDump PROPERTIES
     COMPILE_FLAGS "-std=c++14 -fno-rtti -g"
