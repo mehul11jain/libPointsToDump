@@ -32,53 +32,35 @@ PTDump::FS_PTReader::~FS_PTReader()
  * @param Inst intruction at which points-to info is queried.
  * @return std::vector<std::pair<std::string, std::string>> All Must points-to pairs.
  */
-std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPointsToPairsAt(llvm::Instruction *Inst)
+std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPointsToPairsAt(int LineNo, std::string Fname)
 {
 
-    std::vector<std::pair<std::string, std::string>> result;
-    llvm::BasicBlock *BBOfInst = Inst->getParent();
-    llvm::Function *FunctionOfInst = Inst->getFunction();
-
-    int Inst_id;
-    int Inst_Count = 1;
-    for (llvm::Instruction &I : *BBOfInst)
-    {
-        if (&I == Inst)
-        {
-            Inst_id = Inst_Count;
-            break;
-        }
-        Inst_Count++;
-    }
+    std::vector<std::pair<std::string, std::string>> result;        
     
     if (!reader["FlowSensitivePointsToInfo"].empty())
     {
-        auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
-        for (auto proc : ProcList)
+        auto FileList = reader["FlowSensitivePointsToInfo"]["File"];
+        for (auto file : FileList)
         {
-            if (proc["Functionid"] == FunctionOfInst->getName())
+            if (file["name"] == Fname)
             {
-                auto BBList = proc["BasicBlocks"];
-                for (auto BB : BBList)
+                auto procList = file["Procedure"];
+                for (auto proc : procList)
                 {
-                    if (BB["BBid"] == BBOfInst->getName())
+                    for(auto pp : proc["ProgramPoints"])
                     {
-                        auto InstSet = BB["Instructions"];
-                        for (auto I : InstSet)
+                        if(pp["LineNo"] == LineNo)
                         {
-                            if (I["Instructionid"] == Inst_id)
+                            auto PTSet = pp["PointsToSet"];
+                            for (auto Pointer : PTSet)
                             {
-                                auto PTSet = I["PointsToSet"];
-                                for (auto Pointer : PTSet)
+                                for (auto Pointee : Pointer["PointeeSet"])
                                 {
-                                    for (auto Pointee : Pointer["PointeeSet"])
-                                    {
-                                        if (Pointee["PointeeType"] == "Must")
-                                            result.push_back(std::make_pair(Pointer["name"], Pointee["name"]));
-                                    }
+                                    if (Pointee["PointeeType"] == "Must")
+                                        result.push_back(std::make_pair(Pointer["name"], Pointee["name"]));
                                 }
                             }
-                        }
+                        }                        
                     }
                 }
             }
@@ -92,54 +74,35 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPoi
  * @param Inst Instruction at which points-to info is queried.
  * @return std::vector<std::pair<std::string, std::string>> All may Points-to pairs.
  */
-std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPointsToPairsAt(llvm::Instruction *Inst)
+std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPointsToPairsAt(int LineNo, std::string Fname)
 {
 
-    std::vector<std::pair<std::string, std::string>> result;
-    llvm::BasicBlock *BBOfInst = Inst->getParent();
-    llvm::Function *FunctionOfInst = Inst->getFunction();
-
-    int Inst_id;
-    int Inst_Count = 1;
-    for (llvm::Instruction &I : *BBOfInst)
-    {
-        if (&I == Inst)
-        {
-            Inst_id = Inst_Count;
-            break;
-        }
-        Inst_Count++;
-    }
-
+    std::vector<std::pair<std::string, std::string>> result;        
     
     if (!reader["FlowSensitivePointsToInfo"].empty())
     {
-        auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
-        for (auto proc : ProcList)
+        auto FileList = reader["FlowSensitivePointsToInfo"]["File"];
+        for (auto file : FileList)
         {
-            if (proc["Functionid"] == FunctionOfInst->getName())
+            if (file["name"] == Fname)
             {
-                auto BBList = proc["BasicBlocks"];
-                for (auto BB : BBList)
+                auto procList = file["Procedure"];
+                for (auto proc : procList)
                 {
-                    if (BB["BBid"] == BBOfInst->getName())
+                    for(auto pp : proc["ProgramPoints"])
                     {
-                        auto InstSet = BB["Instructions"];
-                        for (auto I : InstSet)
+                        if(pp["LineNo"] == LineNo)
                         {
-                            if (I["Instructionid"] == Inst_id)
+                            auto PTSet = pp["PointsToSet"];
+                            for (auto Pointer : PTSet)
                             {
-                                auto PTSet = I["PointsToSet"];
-                                for (auto Pointer : PTSet)
+                                for (auto Pointee : Pointer["PointeeSet"])
                                 {
-                                    for (auto Pointee : Pointer["PointeeSet"])
-                                    {
-                                        if (Pointee["PointeeType"] == "May")
-                                            result.push_back(std::make_pair(Pointer["name"], Pointee["name"]));
-                                    }
+                                    if (Pointee["PointeeType"] == "May")
+                                        result.push_back(std::make_pair(Pointer["name"], Pointee["name"]));
                                 }
                             }
-                        }
+                        }                        
                     }
                 }
             }
@@ -152,12 +115,12 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPoin
  * 
  * @param Inst The Instruction at which the points-to graph needs to be printed.
  */
-void PTDump::FS_PTReader::printToDot(llvm::Instruction *Inst)
+void PTDump::FS_PTReader::printToDot(int LineNo, std::string Fname)
 {
     std::vector<std::pair<std::string, std::string>> MayPointsToSet, MustPointsToSet;
     
-    MayPointsToSet = getMayPointsToPairsAt(Inst);
-    MustPointsToSet = getMustPointsToPairsAt(Inst);    
+    MayPointsToSet = getMayPointsToPairsAt(LineNo, Fname);
+    MustPointsToSet = getMustPointsToPairsAt(LineNo, Fname);    
 
     std::set<std::string> Nodes;
     for (auto x : MayPointsToSet)
@@ -171,8 +134,7 @@ void PTDump::FS_PTReader::printToDot(llvm::Instruction *Inst)
         Nodes.insert(x.second);
     }
     std::string str;
-    llvm::raw_string_ostream ss(str);
-    ss << *Inst;
+    llvm::raw_string_ostream ss(str);    
     std::map<std::string, int> NodeMap;
     std::ofstream fstr;
     fstr.open("test.dot");
@@ -202,9 +164,9 @@ void PTDump::FS_PTReader::printToDot(llvm::Instruction *Inst)
  * @return true 
  * @return false 
  */
-bool PTDump::FS_PTReader::isMayPointee(llvm::Instruction *Inst, llvm::Value *Pointer, llvm::Value *Pointee)
+bool PTDump::FS_PTReader::isMayPointee(int LineNo, std::string Fname, llvm::Value *Pointer, llvm::Value *Pointee)
 {
-    std::vector<std::pair<std::string, std::string>> MayPointsToSet = getMayPointsToPairsAt(Inst);
+    std::vector<std::pair<std::string, std::string>> MayPointsToSet = getMayPointsToPairsAt(LineNo, Fname);
     std::string PointerStr = Pointer->getName().str();
     std::string PointeeStr = Pointee->getName().str();
     std::pair<std::string, std::string> Pointer_Pointee_pair = std::make_pair(PointerStr, PointeeStr);
@@ -227,9 +189,9 @@ bool PTDump::FS_PTReader::isMayPointee(llvm::Instruction *Inst, llvm::Value *Poi
  * @return true 
  * @return false 
  */
-bool PTDump::FS_PTReader::isMustPointee(llvm::Instruction *Inst, llvm::Value *Pointer, llvm::Value *Pointee)
+bool PTDump::FS_PTReader::isMustPointee(int LineNo, std::string Fname, llvm::Value *Pointer, llvm::Value *Pointee)
 {
-    std::vector<std::pair<std::string, std::string>> MustPointsToSet = getMustPointsToPairsAt(Inst);
+    std::vector<std::pair<std::string, std::string>> MustPointsToSet = getMustPointsToPairsAt(LineNo, Fname);
     std::string PointerStr = Pointer->getName().str();
     std::string PointeeStr = Pointee->getName().str();
     std::pair<std::string, std::string> Pointer_Pointee_pair = std::make_pair(PointerStr, PointeeStr);
@@ -300,52 +262,33 @@ void PTDump::FS_PTReader::printPointsToDump()
  * @param Pointer Pointer for which all the Pointees are needed.
  * @return std::vector<std::string> 
  */
-std::vector<std::string> PTDump::FS_PTReader::getPointeesOf(llvm::Instruction* Inst, llvm::Value* Pointer)
+std::vector<std::string> PTDump::FS_PTReader::getPointeesOf(int LineNo, std::string Fname, llvm::Value* Pointer)
 {
     std::vector<std::string> result;
-    llvm::BasicBlock* BBOfInst = Inst->getParent();
-    llvm::Function* FunctionOfInst = Inst->getFunction();
 
-    int Inst_id;
-    int Inst_Count = 1;
-    for (llvm::Instruction &I : *BBOfInst)
-    {
-        if (&I == Inst)
-        {
-            Inst_id = Inst_Count;
-            break;
-        }
-        Inst_Count++;
-    }
-    
     if (!reader["FlowSensitivePointsToInfo"].empty())
     {
-        auto ProcList = reader["FlowSensitivePointsToInfo"]["Procedure"];
-        for(auto proc : ProcList)
+        auto FileList = reader["FlowSensitivePointsToInfo"]["File"];
+        for(auto file : FileList)
         {
-            if(proc["Functionid"] == FunctionOfInst->getName().str())
+            if (file["name"] == Fname)
             {
-                for(auto BB : proc["BasicBlocks"])
+                auto procList = file["Procedure"];
+                for (auto proc : procList)
                 {
-                    if(BB["BBid"] == BBOfInst->getName())
+                    for(auto pp : proc["ProgramPoints"])
                     {
-                        for(auto I : BB["Instructions"])
+                        if(pp["LineNo"] == LineNo)
                         {
-                            if(I["Instructionid"] == Inst_id)
+                            auto PTSet = pp["PointsToSet"];
+                            for (auto Pointer : PTSet)
                             {
-                                auto PTSet = I["PointsToSet"];
-                                for(auto ptr : PTSet)
-                                {
-                                    if(ptr["name"] == Pointer->getName().str())
-                                    {
-                                        for(auto pointees : ptr["PointeeSet"])
-                                        {
-                                            result.push_back(pointees["name"]);
-                                        }
-                                    }
+                                for (auto Pointee : Pointer["PointeeSet"])
+                                {                                    
+                                    result.push_back(Pointee["name"]);
                                 }
                             }
-                        }
+                        }                        
                     }
                 }
             }

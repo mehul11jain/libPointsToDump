@@ -41,30 +41,29 @@ PTDump::FS_PTWriter::~FS_PTWriter()
  * @return true: Action executed successfully.
  * @return false: Action Failed. 
  */
-bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::BasicBlock* currBB, llvm::Instruction* currInst, const llvm::Value* Pointer, const llvm::Value* Pointee, PointeeType type)
+bool PTDump::FS_PTWriter::WritePointsToinfoAt(llvm::Function* currFunc, int LineNo, std::string FileName, const llvm::Value* Pointer, const llvm::Value* Pointee, PointeeType type)
 {
-    if(!currFunc || !currBB || !currInst || !Pointer || !Pointee){
+    if(!currFunc || !Pointer || !Pointee){
         std::cout << "Invalid input given (got Null Pointer). kindly Check the input to AddPointsToinfoAt()\n";
         return 0;
     }    
     if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
+        if(latestFile.empty() || latestFile.top() != FileName)
+        {
+            latestFile.push(FileName);
+            AddFileInfo(FileName);
+        }
         if(latestFunction.empty() || latestFunction.top() != currFunc)
         {
             latestFunction.push(currFunc);
             AddProcedureInfo(currFunc); 
         }
-        if(latestBB.empty() || latestBB.top() != currBB)
+        if(latestLineNo.empty() || latestLineNo.top() != LineNo)
         {
-            latestBB.push(currBB);
-            AddBasicBlockInfo(currBB);
-        }
-
-        if(latestInst.empty() || latestInst.top() != currInst)// llvm::outs() << *currBB << *currInst << *currFunc << "\n";
-        {
-            latestInst.push(currInst);
-            PointsToInfoAt(currInst);
-        }
+            latestLineNo.push(LineNo);
+            PointsToInfoAt(LineNo);
+        }        
         addPointsTo(Pointer, Pointee, type);
     }    
     return 1;
@@ -83,47 +82,28 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
     // To implement  
     if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
-        if(latestBB.empty()){
-            llvm::outs() << "Invalid use of library no info about the basic block of instruction provided";
+        if(latestLineNo.empty()){
+            llvm::outs() << "Invalid use of library no info about the line in source provided";
             return 0;
-        }
-        else if(latestFunction.empty()){
-            llvm::outs() << "Invalid use of library no info about the Procedure of instruction provided";
-            return 0;
-        }
-        else if(latestInst.empty()){
-            llvm::outs() << "Invalid use of library no info about the instruction provided";
-            return 0;
-        }
+        }        
 
-        llvm::BasicBlock* LastBB = latestBB.top();
         llvm::Function* LastProc = latestFunction.top();
-        llvm::Instruction* LastInst = latestInst.top();
+        std::string LastFile = latestFile.top();
+        int LastLineNo = latestLineNo.top();        
 
-        int Inst_id;
-        int Inst_Count = 1;
-        for(llvm::Instruction& I : *LastBB)
+        json *FileArray = &(writer["FlowSensitivePointsToInfo"]["File"]);
+        for(auto it = (*FileArray).begin(); it != (*FileArray).end(); it++)
         {
-            if(&I == LastInst)
+            if((*it)["name"] == LastFile)
             {
-                Inst_id = Inst_Count;
-                break;
-            }
-            Inst_Count++;
-        }
-
-        json *ProcedureArray = &(writer["FlowSensitivePointsToInfo"]["Procedure"]);
-        for(auto it = (*ProcedureArray).begin(); it != (*ProcedureArray).end(); it++)
-        {
-            if((*it)["Functionid"] == LastProc->getName().str())
-            {
-                for(auto i = ((*it)["BasicBlocks"]).begin(); i != ((*it)["BasicBlocks"]).end(); i++)
+                for(auto i = ((*it)["Procedure"]).begin(); i != ((*it)["Procedure"]).end(); i++)
                 {
-                    if((*i)["BBid"] == LastBB->getName().str())
+                    if((*i)["FunctionID"] == LastProc->getName().str())
                     {                                                
-                        for(auto i2 = (*i)["Instructions"].begin(); i2 != (*i)["Instructions"].end(); i2++)
+                        for(auto i2 = (*i)["ProgramPoints"].begin(); i2 != (*i)["ProgramPoints"].end(); i2++)
                         {
-                            if((*i2)["Instructionid"] == Inst_id){
+                            if((*i2)["LineNo"] == LastLineNo)
+                            {
                                 bool search_poiner = 0;
                                 for(auto i3 = (*i2)["PointsToSet"].begin(); i3 != (*i2)["PointsToSet"].end(); i3++)
                                 {
@@ -173,7 +153,7 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
                                     obj["PointeeSet"] += PointeeObj;
                                     (*i2)["PointsToSet"] += obj;
                                 }
-                            }
+                            }                            
                         }
                     }
                 }
@@ -191,20 +171,22 @@ bool PTDump::FS_PTWriter::AddPointsToinfoAt(llvm::Function* currFunc, llvm::Basi
  */
 bool PTDump::FS_PTWriter::AddProcedureInfo(llvm::Function* currFunc)
 {    
+    std::string LastFile = latestFile.top();
     if(Atype == PTDump::AnalysisType::FlowSensitive)
     {
-        std::string FuncName = currFunc->getName().str();
-        if(writer["FlowSensitivePointsToInfo"]["Procedure"].empty())
-            writer["FlowSensitivePointsToInfo"]["Procedure"] = json::array();
-        
-        json procObj = json::object();        
-        procObj["Functionid"] = FuncName;
-        if(procObj["BasicBlocks"].empty())
-            procObj["BasicBlocks"] = json::array();        
-
-        writer["FlowSensitivePointsToInfo"]["Procedure"] += procObj;        
-    }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
+        json *FileArray = &(writer["FlowSensitivePointsToInfo"]["File"]);        
+        for(auto it = (*FileArray).begin(); it != (*FileArray).end(); it++)
+        {
+            if ((*it)["name"] == LastFile)
+            {
+                json obj;
+                obj["FunctionID"] = currFunc->getName().str();
+                obj["ProgramPoints"] = json::array();
+                (*it)["Procedure"].push_back(obj);
+            }
+            
+        }
+    }    
     return 1;
 }
 /**
@@ -214,28 +196,21 @@ bool PTDump::FS_PTWriter::AddProcedureInfo(llvm::Function* currFunc)
  * @return true: Action executed successfully.
  * @return false: Action Failed.
  */
-bool PTDump::FS_PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB)
-{
-    llvm::Function* currFunc = latestFunction.top();
+bool PTDump::FS_PTWriter::AddFileInfo(std::string FileName)
+{       
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
+    {     
+        std::string FName = FileName;
+        if(writer["FlowSensitivePointsToInfo"]["File"].empty())
+            writer["FlowSensitivePointsToInfo"]["File"] = json::array();
+        
+        json procObj = json::object();        
+        procObj["name"] = FileName;
+        if(procObj["Procedure"].empty())
+            procObj["Procedure"] = json::array();        
 
-    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
-    else if(Atype == PTDump::AnalysisType::FlowSensitive)
-    {                                
-        json *ProcedureArray = &(writer["FlowSensitivePointsToInfo"]["Procedure"]);        
-        for(auto it = (*ProcedureArray).begin(); it != (*ProcedureArray).end(); it++)
-        {
-            if((*it)["Functionid"] == currFunc->getName().str())
-            {
-                json obj;
-                obj["BBid"] = currBB->getName().str(); 
-                if(obj["Instructions"].empty())               
-                    obj["Instructions"] = json::array();                
-
-                (*it)["BasicBlocks"].push_back(obj);
-            }
-        }        
-    }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
+        writer["FlowSensitivePointsToInfo"]["File"] += procObj;                
+    }    
     return 1;
 }
 /**
@@ -245,47 +220,130 @@ bool PTDump::FS_PTWriter::AddBasicBlockInfo(llvm::BasicBlock* currBB)
  * @return true: Action executed successfully.
  * @return false: Action Failed. 
  */
-bool PTDump::FS_PTWriter::PointsToInfoAt(llvm::Instruction* Inst)
+bool PTDump::FS_PTWriter::PointsToInfoAt(int LineNo)
 {
-    llvm::Function* currFunc = latestFunction.top();
-    llvm::BasicBlock* currBB = latestBB.top();
-
-    int Inst_id;
-    int Inst_Count = 1;
-    for(llvm::Instruction& I : *currBB)
-    {
-        if(&I == Inst){
-            Inst_id = Inst_Count;
-            break;
-        }
-        Inst_Count++;
-    }
-
-    if(Atype == PTDump::AnalysisType::FlowInsensitive){}
-    else if(Atype == PTDump::AnalysisType::FlowSensitive)
+    std::string File = latestFile.top();
+    llvm::Function* currFunc = latestFunction.top();    
+    
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
     {                                
-        json *ProcedureArray = &(writer["FlowSensitivePointsToInfo"]["Procedure"]);
-        for(auto it = (*ProcedureArray).begin(); it != (*ProcedureArray).end(); it++)
+        json *FileArray = &(writer["FlowSensitivePointsToInfo"]["File"]);
+        for(auto it = (*FileArray).begin(); it != (*FileArray).end(); it++)
         {
-            if((*it)["Functionid"] == currFunc->getName().str())
+            if((*it)["name"] == File)
             {
-                for(auto i = ((*it)["BasicBlocks"]).begin(); i != ((*it)["BasicBlocks"]).end(); i++)
+                for(auto i = ((*it)["Procedure"]).begin(); i != ((*it)["Procedure"]).end(); i++)
                 {
-                    if((*i)["BBid"] == currBB->getName().str())
+                    if((*i)["FunctionID"] == currFunc->getName().str())
                     {
                         json obj = json::object();                        
 
-                        obj["Instructionid"] = Inst_id;
+                        obj["LineNo"] = LineNo;
                         if(obj["PointsToSet"].empty())
                             obj["PointsToSet"] = json::array();
                         
-                        (*i)["Instructions"].push_back(obj);
+                        (*i)["ProgramPoints"].push_back(obj);
+                    }
+                }
+            }
+        }
+    }    
+    return 1;
+}
+/**
+ * @brief 
+ * 
+ */
+bool PTDump::FS_PTWriter::WritePointsToinfoAt(llvm::Function* currFunc, int LineNo, std::string FileName, std::string Pointer, std::string Pointee,std::string PointerType, std::string TypeOfPointee , PointeeType type)
+{
+    if(!currFunc)
+    {
+        std::cout << "Invalid input given (got Null Pointer). kindly Check the input to WritePointsToinfoAt()\n";
+        return 0;
+    }    
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
+    {
+        if(latestFile.empty() || latestFile.top() != FileName)
+        {
+            latestFile.push(FileName);
+            AddFileInfo(FileName);
+        }
+        if(latestFunction.empty() || latestFunction.top() != currFunc)
+        {
+            latestFunction.push(currFunc);
+            AddProcedureInfo(currFunc); 
+        }
+        if(latestLineNo.empty() || latestLineNo.top() != LineNo)
+        {
+            latestLineNo.push(LineNo);
+            PointsToInfoAt(LineNo);
+        }
+        addPointsTo(Pointer, Pointee, PointerType, TypeOfPointee, type);
+    }
+    return 1;        
+}
+/**
+ * @brief 
+ * 
+ */
+bool PTDump::FS_PTWriter::addPointsTo(std::string Pointer, std::string Pointee, std::string PointerType, std::string TypeOfPointee , PointeeType type)
+{
+    if(Atype == PTDump::AnalysisType::FlowSensitive)
+    {
+        if(latestLineNo.empty()){
+            llvm::outs() << "Invalid use of library no info about the line in source provided";
+            return 0;
+        }        
+
+        llvm::Function* LastProc = latestFunction.top();
+        std::string LastFile = latestFile.top();
+        int LastLineNo = latestLineNo.top();        
+
+        json *FileArray = &(writer["FlowSensitivePointsToInfo"]["File"]);
+        for(auto it = (*FileArray).begin(); it != (*FileArray).end(); it++)
+        {
+            if((*it)["name"] == LastFile)
+            {
+                for(auto i = ((*it)["Procedure"]).begin(); i != ((*it)["Procedure"]).end(); i++)
+                {
+                    if((*i)["FunctionID"] == LastProc->getName().str())
+                    {                                                
+                        for(auto i2 = (*i)["ProgramPoints"].begin(); i2 != (*i)["ProgramPoints"].end(); i2++)
+                        {
+                            if((*i2)["LineNo"] == LastLineNo)
+                            {
+                                bool search_poiner = 0;
+                                for(auto i3 = (*i2)["PointsToSet"].begin(); i3 != (*i2)["PointsToSet"].end(); i3++)
+                                {
+                                    if((*i3)["name"] == Pointer)
+                                    {
+                                        json PointeeObj;
+                                        PointeeObj["name"] = Pointee;                                                                                
+                                        PointeeObj["type"] = TypeOfPointee;
+                                        PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
+                                        (*i3)["PointeeSet"] += PointeeObj;
+                                        search_poiner = 1;
+                                    }
+                                }
+                                if(!search_poiner)
+                                {
+                                    json obj;
+                                    obj["name"] = Pointer;                                                                                                      
+                                    obj["type"] = PointerType;                   
+                                    json PointeeObj;
+                                    PointeeObj["name"] = Pointee;
+                                    PointeeObj["type"] = TypeOfPointee;
+                                    PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
+                                    obj["PointeeSet"] += PointeeObj;
+                                    (*i2)["PointsToSet"] += obj;
+                                }                                    
+                            }
+                        }
                     }
                 }
             }
         }
     }
-    else if(Atype == PTDump::AnalysisType::ContextSensitive){}
     return 1;
 }
 /**

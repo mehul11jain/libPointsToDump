@@ -11,12 +11,12 @@ namespace PTDump
             FS_PTReader(std::string);
             FS_PTReader(std::string, std::string);
             ~FS_PTReader();
-            std::vector<std::pair<std::string, std::string>> getMustPointsToPairsAt(llvm::Instruction*);
-            std::vector<std::pair<std::string, std::string>> getMayPointsToPairsAt(llvm::Instruction*);
-            void printToDot(llvm::Instruction*);
-            bool isMustPointee(llvm::Instruction*, llvm::Value*, llvm::Value*);
-            bool isMayPointee(llvm::Instruction*, llvm::Value*, llvm::Value*);
-            std::vector<std::string> getPointeesOf(llvm::Instruction*, llvm::Value*);
+            std::vector<std::pair<std::string, std::string>> getMustPointsToPairsAt(int LineNo, std::string Fname);
+            std::vector<std::pair<std::string, std::string>> getMayPointsToPairsAt(int LineNo, std::string Fname);
+            void printToDot(int LineNo, std::string Fname);
+            bool isMustPointee(int LineNo, std::string Fname, llvm::Value*, llvm::Value*);
+            bool isMayPointee(int LineNo, std::string Fname, llvm::Value*, llvm::Value*);
+            std::vector<std::string> getPointeesOf(int LineNo, std::string Fname, llvm::Value*);
             void printPointsToDump();
     };
 }

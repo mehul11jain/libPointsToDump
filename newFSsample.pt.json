@@ -1,0 +1,58 @@
+{
+    "FlowInsensitivePointsToInfo": {},
+    "FlowSensitivePointsToInfo": {
+        "File": [
+            {
+                "name": "1.c",
+                "Procedure": [
+                    {
+                        "FunctionID": "main",
+                        "ProgramPoints": [
+                            {
+                                "LineNo": 2,
+                                "PointsToSet": [
+                                    {
+                                        "type": "i32**",
+                                        "name": "p",
+                                        "PointeeSet": [
+                                            {
+                                                "Pointee": "x",
+                                                "type": "i32*"
+                                            },
+                                            {
+                                                "Pointee": "y",
+                                                "type": "i32*"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "i32**",
+                                        "name": "q",
+                                        "PointeeSet": [
+                                            {
+                                                "Pointee": "x",
+                                                "scope": "global",
+                                                "type": "i32*"
+                                            }
+                                        ]
+                                    },
+                                    {
+                                        "type": "i32*",
+                                        "name": "x",
+                                        "PointeeSet": [
+                                            {
+                                                "Pointee": "a",
+                                                "type": "int"
+                                            }
+                                        ]
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            }
+        ]
+    },
+    "ContextSensitivePointsToInfo": {}
+}

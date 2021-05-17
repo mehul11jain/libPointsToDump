@@ -14,7 +14,6 @@ namespace PTDump
             void printPointsToDump();
             void printAllPts(const llvm::Value*);
             bool isPointee(const llvm::Value*, const llvm::Value*);
-
     };
 };
 #endif /* _FIS_PT_READER_ */
