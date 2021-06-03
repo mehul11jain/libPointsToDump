@@ -152,6 +152,10 @@ void PTDump::FS_PTReader::printToDot(int LineNo, std::string Fname)
     {
         fstr << NodeMap[x.first] << " -> " << NodeMap[x.second] << ";\n";
     }
+    for (auto x : MustPointsToSet)
+    {
+        fstr << NodeMap[x.first] << " -> " << NodeMap[x.second] << ";\n";
+    }
     fstr << "}\n";
     fstr.close();
 }

@@ -121,7 +121,17 @@ bool PTDump::FS_PTWriter::WritePointsToinfoAt(llvm::Function* currFunc, int Line
 
                                         PointeeObj["type"] = rso2.str();
                                         PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
-                                        (*i3)["PointeeSet"] += PointeeObj;
+                                        bool check_if_pointee_exists = 0;                                        
+                                        for(auto itr : (*i3)["PointeeSet"])                                        
+                                        {
+                                            if(itr["name"] == PointeeObj["name"] && itr["PointeeType"] == PointeeObj["PointeeType"] && itr["type"] == PointeeObj["type"])
+                                            {
+                                                check_if_pointee_exists = 1;
+                                                break;
+                                            }
+                                        } 
+                                        if(!check_if_pointee_exists)
+                                            (*i3)["PointeeSet"] += PointeeObj;
                                         search_poiner = 1;
                                     }
                                 }
@@ -321,7 +331,17 @@ bool PTDump::FS_PTWriter::addPointsTo(std::string Pointer, std::string Pointee, 
                                         PointeeObj["name"] = Pointee;                                                                                
                                         PointeeObj["type"] = TypeOfPointee;
                                         PointeeObj["PointeeType"] = (type == PTDump::MayPointee) ? "May" : "Must";
-                                        (*i3)["PointeeSet"] += PointeeObj;
+                                        bool check_if_pointee_exists = 0;                                        
+                                        for(auto itr : (*i3)["PointeeSet"])                                        
+                                        {
+                                            if(itr["name"] == PointeeObj["name"] && itr["PointeeType"] == PointeeObj["PointeeType"] && itr["type"] == PointeeObj["type"])
+                                            {
+                                                check_if_pointee_exists = 1;
+                                                break;
+                                            }
+                                        } 
+                                        if(!check_if_pointee_exists)
+                                            (*i3)["PointeeSet"] += PointeeObj;        
                                         search_poiner = 1;
                                     }
                                 }
