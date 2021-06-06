@@ -1,16 +1,36 @@
 #include "FIS_PTReader.h"
+/**
+ * @brief Construct a new ptdump::FIS_PTReader::FIS_PTReader object
+ * 
+ * @param fName 
+ */
 PTDump::FIS_PTReader::FIS_PTReader(std::string fName) : PTDump::PTReader::PTReader(fName)
 {
 
 }
+/**
+ * @brief Construct a new ptdump::FIS_PTReader::FIS_PTReader object
+ * 
+ * @param fName 
+ * @param path 
+ */
 PTDump::FIS_PTReader::FIS_PTReader(std::string fName, std::string path) : PTDump::PTReader::PTReader(fName, path)
 {
 
 }
+/**
+ * @brief Destroy the new ptdump::FIS_PTReader::FIS_PTReader object
+ * 
+ */
 PTDump::FIS_PTReader::~FIS_PTReader()
 {
 }
-
+/**
+ * @brief 
+ * 
+ * @param Pointer 
+ * @return int 
+ */
 int PTDump::FIS_PTReader::sizeOfPtSet(const llvm::Value* Pointer)
 {
     int size;
@@ -50,6 +70,11 @@ int PTDump::FIS_PTReader::sizeOfPtSet(const llvm::Value* Pointer)
     }
     return size;
 }
+/**
+ * @brief 
+ * 
+ * @param Pointer 
+ */
 void PTDump::FIS_PTReader::printAllPts(const llvm::Value* Pointer)
 {
     
@@ -99,7 +124,10 @@ void PTDump::FIS_PTReader::printAllPts(const llvm::Value* Pointer)
         }
     }
 }
-
+/**
+ * @brief 
+ * 
+ */
 void PTDump::FIS_PTReader::printPointsToDump()
 {
     auto PTGraph = reader["FlowInsensitivePointsToInfo"]["PointsToGraph"];
@@ -121,7 +149,10 @@ void PTDump::FIS_PTReader::printPointsToDump()
     }
     std::cout << "\n-------------------------------------------------------------------------------------------------------------------------\n\n";
 }
-
+/**
+ * @brief 
+ * 
+ */
 void PTDump::FIS_PTReader::printToDot()
 {
     std::map<std::string, int> ValID;
@@ -186,7 +217,14 @@ void PTDump::FIS_PTReader::printToDot()
     fstr << "}\n";
     fstr.close();
 }
-
+/**
+ * @brief 
+ * 
+ * @param Pointer 
+ * @param Pointee 
+ * @return true 
+ * @return false 
+ */
 bool PTDump::FIS_PTReader::isPointee(const llvm::Value* Pointer, const llvm::Value* Pointee)
 {
     bool is_global_pointer = llvm::isa<llvm::GlobalVariable>(Pointer);

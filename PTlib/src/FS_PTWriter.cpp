@@ -2,8 +2,7 @@
 
 /**
  * @brief Construct a new PTDump::FS_PTWriter::FS_PTWriter object.
- * \par Default Constructor for creating a PTWriter object.
- * \par Analysis type is FlowInsensitive by default.
+ * \par Default Constructor for creating a FS_PTWriter object.
  * 
  */
 PTDump::FS_PTWriter::FS_PTWriter() : PTDump::PTWriter::PTWriter()
@@ -13,9 +12,9 @@ PTDump::FS_PTWriter::FS_PTWriter() : PTDump::PTWriter::PTWriter()
 /**
  * @brief Construct a new PTDump::FS_PTWriter::FS_PTWriter object
  * 
- * @param type Defines the Analysis Type.
- * @param path Absolute path to write in the file.
- * @param File represents the file name for json.
+ * @param type Defines the Analysis Type(Flow-Sensitive/Flow-Insensitive)
+ * @param path Absolute path to the location to write the JSON file.
+ * @param File represents the name of the JSON file to be written.
  */
 PTDump::FS_PTWriter::FS_PTWriter(PTDump::AnalysisType type, std::string File, std::string path) : PTDump::PTWriter::PTWriter(type, File, path)
 {
@@ -23,7 +22,7 @@ PTDump::FS_PTWriter::FS_PTWriter(PTDump::AnalysisType type, std::string File, st
 }
 /**
  * @brief Destroy the PTDump::FS_PTWriter::FS_PTWriter object
- * 
+ * \par creates the JSON file with the serialized Points-to Information.
  */
 PTDump::FS_PTWriter::~FS_PTWriter()
 {
@@ -32,9 +31,9 @@ PTDump::FS_PTWriter::~FS_PTWriter()
 /**
  * @brief Wrapper Function for user to invoke to store the points-to information in json.
  * 
- * @param currFunc current Function under analysis.
- * @param currBB   current BasicBlock under analysis.
- * @param currInst current Instruction to be processed.
+ * @param currFunc Function to which this Program Point(defined by LineNo) belongs.
+ * @param LineNo Line number(in source file) at which Points-to Pairs is being specified.
+ * @param Fname Source File for which we are specifying the information.
  * @param Pointer  Pointer variable for which pointee set needs to be updated.
  * @param Pointee Pointee to be added.
  * @param type Type of the Pointee i.e either Must or May.
@@ -202,7 +201,7 @@ bool PTDump::FS_PTWriter::AddProcedureInfo(llvm::Function* currFunc)
 /**
  * @brief Add Information about the basic block to which the current Instruction belongs to.
  * 
- * @param currBB Current Basic Block to which current instruction belongs.
+ * @param Fname Current source file for which we are writing the information.
  * @return true: Action executed successfully.
  * @return false: Action Failed.
  */
@@ -226,7 +225,7 @@ bool PTDump::FS_PTWriter::AddFileInfo(std::string FileName)
 /**
  * @brief 
  * 
- * @param Inst 
+ * @param LineNo Current Line number(in source file) at which Points-to Information is being specified.
  * @return true: Action executed successfully.
  * @return false: Action Failed. 
  */
@@ -263,6 +262,16 @@ bool PTDump::FS_PTWriter::PointsToInfoAt(int LineNo)
 /**
  * @brief 
  * 
+ * @param currFunc Function to which this Program Point(defined by LineNo) belongs.
+ * @param LineNo Line number(in source file) at which Points-to Pairs is being specified.
+ * @param Fname Source File for which we are specifying the information.
+ * @param Pointer  Pointer variable for which pointee set needs to be updated.
+ * @param Pointee Pointee to be added.
+ * @param PointerType Type of pointer needs to be specified in the form of std::string.
+ * @param TypeofPointee Type of pointee needs to be specified in the form of std::string.
+ * @param type specifies Pointer-Pointee relationship i.e either Must or May.
+ * @return true: Action executed successfully.
+ * @return false: Action Failed.
  */
 bool PTDump::FS_PTWriter::WritePointsToinfoAt(llvm::Function* currFunc, int LineNo, std::string FileName, std::string Pointer, std::string Pointee,std::string PointerType, std::string TypeOfPointee , PointeeType type)
 {
@@ -293,7 +302,15 @@ bool PTDump::FS_PTWriter::WritePointsToinfoAt(llvm::Function* currFunc, int Line
     return 1;        
 }
 /**
- * @brief 
+ * @brief Adds the Points-to Information in the json.
+ * 
+ * @param Pointer Pointer variable for which pointee set needs to be updated.
+ * @param Pointee Pointee to be added.
+ * @param PointerType Type of pointer needs to be specified in the form of std::string.
+ * @param TypeofPointee Type of pointee needs to be specified in the form of std::string.
+ * @param type specifies of Pointer-Pointee relationship i.e either Must or May.
+ * @return true: Action executed successfully.
+ * @return false: Action Failed.
  * 
  */
 bool PTDump::FS_PTWriter::addPointsTo(std::string Pointer, std::string Pointee, std::string PointerType, std::string TypeOfPointee , PointeeType type)

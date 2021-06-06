@@ -3,6 +3,10 @@
 #include "PTWriter.h"
 namespace PTDump
 {
+    /**
+     * @brief Provides infrastructure to specify points-to information for Flow-Insensitive Pointer Analysis.
+     * 
+     */
     class FIS_PTWriter : public PTWriter
     {
         std::map<const llvm::Value*,std::set<const llvm::Value*>> PointsToGraph;

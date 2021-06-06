@@ -3,6 +3,10 @@
 #include "PTReader.h"
 namespace PTDump
 {
+    /**
+     * @brief Provides functions to query the information from the JSON file for Flow-Insensitive Analysis.
+     * 
+     */
     class FIS_PTReader : public PTReader
     {
         public:

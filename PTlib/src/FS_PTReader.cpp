@@ -29,7 +29,8 @@ PTDump::FS_PTReader::~FS_PTReader()
 /**
  * @brief Returns all Must Points-to piars at a given Instruction.
  * 
- * @param Inst intruction at which points-to info is queried.
+ * @param LineNo Line number(in source file) at which Points-to Pairs needs to be queried.
+ * @param Fname Source File for which we are specifying the information.
  * @return std::vector<std::pair<std::string, std::string>> All Must points-to pairs.
  */
 std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPointsToPairsAt(int LineNo, std::string Fname)
@@ -71,7 +72,8 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMustPoi
 /**
  * @brief Returns All may Points-to pairs at a given instruction.
  * 
- * @param Inst Instruction at which points-to info is queried.
+ * @param LineNo Line number(in source file) at which Points-to Pairs needs to be queried.
+ * @param Fname Source File for which we are quering the information.
  * @return std::vector<std::pair<std::string, std::string>> All may Points-to pairs.
  */
 std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPointsToPairsAt(int LineNo, std::string Fname)
@@ -111,9 +113,10 @@ std::vector<std::pair<std::string, std::string>> PTDump::FS_PTReader::getMayPoin
     return result;
 }
 /**
- * @brief Prints the points-to graph at a given instruction.
+ * @brief Prints the points-to graph at a given Program Points.
  * 
- * @param Inst The Instruction at which the points-to graph needs to be printed.
+ * @param LineNo Line number(in source file) at which Points-to Information needs to be queried.
+ * @param Fname Source File for which we are quering the information.
  */
 void PTDump::FS_PTReader::printToDot(int LineNo, std::string Fname)
 {
@@ -160,9 +163,10 @@ void PTDump::FS_PTReader::printToDot(int LineNo, std::string Fname)
     fstr.close();
 }
 /**
- * @brief Determines whether a given pointee is a may-pointee or not.
+ * @brief Checks whether a given pointee has a 'may' relationship with the pointer variable or not.
  * 
- * @param Inst Instruction at which the information is needed.
+ * @param LineNo Line number(in source file) at which Points-to Information needs to be queried.
+ * @param Fname Source File for which we are quering the information.
  * @param Pointer Pointer for which may-pointee needs to be checked,
  * @param Pointee Pointee to be checked whether is may-pointee or not.
  * @return true 
@@ -185,9 +189,10 @@ bool PTDump::FS_PTReader::isMayPointee(int LineNo, std::string Fname, llvm::Valu
     return 0;
 }
 /**
- * @brief Determines whether a given pointee is a must pointee or not.
+ * @brief Checks whether a given pointee has a 'must' relationship with the pointer variable or not.
  * 
- * @param Inst Instruction at which the information is needed.
+ * @param LineNo Line number(in source file) at which Points-to Information needs to be queried.
+ * @param Fname Source File for which we are quering the information.
  * @param Pointer Pointer for which must-pointee needs to be checked,
  * @param Pointee Pointee to be checked whether is must-pointee or not.
  * @return true 
@@ -210,7 +215,7 @@ bool PTDump::FS_PTReader::isMustPointee(int LineNo, std::string Fname, llvm::Val
     return 0;
 }
 /**
- * @brief Prints the enitre points-to information in a result.log file.
+ * @brief Prints the enitre points-to information in a Result.log file.
  * 
  */
 void PTDump::FS_PTReader::printPointsToDump()
@@ -260,9 +265,10 @@ void PTDump::FS_PTReader::printPointsToDump()
     fstr.close();
 }
 /**
- * @brief Finds all the Pointees of a given pointer at a given instruction.
+ * @brief Finds all the Pointees of a pointer at a given Program Point.
  * 
- * @param Inst Instruction at which the information is required.
+ * @param LineNo Line number(in source file) at which Points-to Pairs needs to be queried.
+ * @param Fname Source File for which we are quering the information.
  * @param Pointer Pointer for which all the Pointees are needed.
  * @return std::vector<std::string> 
  */

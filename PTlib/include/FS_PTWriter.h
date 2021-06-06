@@ -3,6 +3,10 @@
 #include "PTWriter.h"
 namespace PTDump{
 
+    /**
+     * @brief Provides infrastructure to specify points-to information for Flow-Sensitive Pointer Analysis.
+     * 
+     */
     class FS_PTWriter : public PTWriter
     {
         std::stack<llvm::Function*> latestFunction;  

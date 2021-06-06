@@ -36,7 +36,7 @@ namespace PTDump
         MustPointee
     };
     /**
-     * @brief A class to Dump the points-to information in the standard .pt format.
+     * @brief A base class which allows us to create analysis specific classes to serialize points-to information .
      * 
      */
     class PTWriter

@@ -18,8 +18,8 @@ using json = nlohmann::json;
 namespace PTDump
 {
     /**
-     * @brief Class to query the generated .pt dump.
-     * \par Provides Various functions to Dump the Points-to Information, Find May/MustPointee at a given Instruction, Creates a Points-to Graph at a given instruction.
+     * @brief Base Class for creating analysis specific classes to query the generated .pt dump.
+     *
      */
     class PTReader
     {

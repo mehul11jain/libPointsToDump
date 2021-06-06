@@ -4,6 +4,10 @@
 
 namespace PTDump
 {
+    /**
+     * @brief Provides functions to query the information from the JSON file for Flow-Sensitive Analysis.
+     * 
+     */
     class FS_PTReader : public PTReader
     {
 

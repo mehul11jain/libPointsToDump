@@ -1,21 +1,46 @@
 #include "FIS_PTWriter.h"
-
+/**
+ * @brief Construct a new PTDump::FIS_PTWriter::FIS_PTWriter object.
+ * \par Default Constructor for creating a FIS_PTWriter object.
+ * 
+ */
 PTDump::FIS_PTWriter::FIS_PTWriter() : PTDump::PTWriter::PTWriter()
 {
 
 }
+/**
+ * @brief Construct a new PTDump::FIS_PTWriter::FIS_PTWriter object
+ * 
+ * @param type Defines the Analysis Type(Flow-Sensitive/Flow-Insensitive)
+ * @param path Absolute path to the location to write the JSON file.
+ * @param File represents the name of the JSON file to be written.
+ */
 PTDump::FIS_PTWriter::FIS_PTWriter(PTDump::AnalysisType type, std::string File, std::string path) : PTDump::PTWriter::PTWriter(type, File, path)
 {
     
 }
+/**
+ * @brief Destroy the PTDump::FIS_PTWriter::FIS_PTWriter object
+ * \par creates the JSON file with the serialized Points-to Information.
+ */
 PTDump::FIS_PTWriter::~FIS_PTWriter()
 {
     WriteToJson();
 }
+/**
+ * @brief Function to add an edge between pointer and pointee i.e. establish a points to relationship between pointer and pointee.
+ * 
+ * @param Pointer The pointer variable.
+ * @param Pointee The pointee variable.
+ */
 void PTDump::FIS_PTWriter::addEdge(const llvm::Value* Pointer,const llvm::Value* Pointee)
 {
     PointsToGraph[Pointer].insert(Pointee);
 }
+/**
+ * @brief Function that writes the points-to information to the JSON file.
+ * 
+ */
 void PTDump::FIS_PTWriter::WriteToJson()
 {
     writer["FlowInsensitivePointsToInfo"]["PointsToGraph"] = json::array();
@@ -71,6 +96,12 @@ void PTDump::FIS_PTWriter::WriteToJson()
     std::ofstream out(Output_File_Path + fname);
     out << std::setw(4) << writer << std::endl;
 }
+/**
+ * @brief Function that finds the function to which a variable belongs
+ * 
+ * @param v The variable whose function is to be determined
+ * @return const llvm::Function* : Returns the function to which the variable belongs.
+ */
 const llvm::Function* PTDump::FIS_PTWriter::findFunction(const llvm::Value* v)
 {
     const llvm::Instruction* I = llvm::dyn_cast<llvm::Instruction>(v);
