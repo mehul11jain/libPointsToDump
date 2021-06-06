@@ -150,7 +150,7 @@ void PTDump::FIS_PTReader::printPointsToDump()
     std::cout << "\n-------------------------------------------------------------------------------------------------------------------------\n\n";
 }
 /**
- * @brief 
+ * @brief prints the points-to information(graph) in a test.dot file
  * 
  */
 void PTDump::FIS_PTReader::printToDot()
