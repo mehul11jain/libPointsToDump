@@ -100,7 +100,7 @@ void PTDump::FIS_PTWriter::WriteToJson()
  * @brief Function that finds the function to which a variable belongs
  * 
  * @param v The variable whose function is to be determined
- * @return const llvm::Function* : Returns the function to which the variable belongs.
+ * @return const llvm::Function* : The function to which the variable belongs.
  */
 const llvm::Function* PTDump::FIS_PTWriter::findFunction(const llvm::Value* v)
 {

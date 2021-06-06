@@ -2,7 +2,7 @@
 /**
  * @brief Construct a new ptdump::FIS_PTReader::FIS_PTReader object
  * 
- * @param fName 
+ * @param fName Name of the file to be queried.
  */
 PTDump::FIS_PTReader::FIS_PTReader(std::string fName) : PTDump::PTReader::PTReader(fName)
 {
@@ -11,8 +11,8 @@ PTDump::FIS_PTReader::FIS_PTReader(std::string fName) : PTDump::PTReader::PTRead
 /**
  * @brief Construct a new ptdump::FIS_PTReader::FIS_PTReader object
  * 
- * @param fName 
- * @param path 
+ * @param fName Name of the file to be queried.
+ * @param path Path to the folder containing the file.
  */
 PTDump::FIS_PTReader::FIS_PTReader(std::string fName, std::string path) : PTDump::PTReader::PTReader(fName, path)
 {
@@ -26,10 +26,10 @@ PTDump::FIS_PTReader::~FIS_PTReader()
 {
 }
 /**
- * @brief 
+ * @brief Computes the size of points-to set of a pointer variable.
  * 
- * @param Pointer 
- * @return int 
+ * @param Pointer Pointer variable whose points-to set's size is to be computed
+ * @return int The size of the points-to set of the pointer variable passed as parameter.
  */
 int PTDump::FIS_PTReader::sizeOfPtSet(const llvm::Value* Pointer)
 {
@@ -71,9 +71,9 @@ int PTDump::FIS_PTReader::sizeOfPtSet(const llvm::Value* Pointer)
     return size;
 }
 /**
- * @brief 
+ * @brief Prints all pointees of the specified pointer variable.
  * 
- * @param Pointer 
+ * @param Pointer Pointer variable whose pointees are to be printed.
  */
 void PTDump::FIS_PTReader::printAllPts(const llvm::Value* Pointer)
 {
@@ -125,7 +125,7 @@ void PTDump::FIS_PTReader::printAllPts(const llvm::Value* Pointer)
     }
 }
 /**
- * @brief 
+ * @brief prints the points to information available in the JSON file.
  * 
  */
 void PTDump::FIS_PTReader::printPointsToDump()
@@ -218,10 +218,10 @@ void PTDump::FIS_PTReader::printToDot()
     fstr.close();
 }
 /**
- * @brief 
+ * @brief Checks whether the given pointer variable points to the given pointee variable.
  * 
- * @param Pointer 
- * @param Pointee 
+ * @param Pointer The pointer variable,
+ * @param Pointee The pointee variable.
  * @return true 
  * @return false 
  */
